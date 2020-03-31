@@ -1,0 +1,29 @@
+{
+"home":[{
+    "image": "url",
+    "title": "Penthouse in Salvà",
+    "price": 700,
+    "description": "desciption",
+    "type": "Flat/Apartment",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "equipment": "Furnished",
+    "condition": "New homes",
+    "date": "date"
+}],
+"office":[{
+    "building_use": "Private",
+    "title": "office in Salvà",
+    "description": "desciption",
+    "price": 700,
+    "image": "url",
+    "date": "date"
+
+
+
+}]
+
+
+
+
+}
