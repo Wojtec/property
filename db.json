@@ -1,5 +1,6 @@
 {
 "home":[{
+    "_id": "",
     "image": "url",
     "title": "Penthouse in Salvà",
     "price": 700,
@@ -12,18 +13,13 @@
     "date": "date"
 }],
 "office":[{
+    "id": "",
     "building_use": "Private",
     "title": "office in Salvà",
     "description": "desciption",
     "price": 700,
     "image": "url",
     "date": "date"
-
-
-
 }]
-
-
-
-
 }
+
