@@ -13,7 +13,7 @@
     "date": "date"
 }],
 "office":[{
-    "id": "",
+    "_id": "",
     "building_use": "Private",
     "title": "office in Salvà",
     "description": "desciption",

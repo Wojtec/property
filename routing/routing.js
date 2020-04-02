@@ -1,5 +1,5 @@
-let router = require('express').Router();
-
+const router = require('express').Router();
+const searchController = require('../controller/searchController');
 // def response
 
 router.get('/',(req,res)=>{
@@ -9,4 +9,14 @@ router.get('/',(req,res)=>{
     });
 });
 
+//home routes
+router.route('/home')
+.get(searchController.index)
+.post(searchController.new);
+
+
+router.route('/home/:home_id')
+.get(searchController.one);
+
+// export api routes
 module.exports = router;

@@ -4,14 +4,14 @@ const express = require('express');
 const app = express();
 //setup port
 const port = process.env.PORT || 3000;
-//import routes
-const apiRoutes = require('./routing/routing');
 //import bodyparser
 const bodyParser = require('body-parser');
 //import mongoose
 const mongoose = require('mongoose');
 // import url db config
 const dbUrl = require('./config/dbconfig');
+//import routes
+const apiRoutes = require('./routing/routing');
 // configure bodyparser to handle post request 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -31,8 +31,8 @@ if(!db){
 
 
 
+app.use('/home',apiRoutes);
 app.use('/api',apiRoutes);
-app.use('/',apiRoutes);
 
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));
