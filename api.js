@@ -30,9 +30,8 @@ if(!db){
 
 
 
-
+app.use('/',apiRoutes);
 app.use('/home',apiRoutes);
-app.use('/api',apiRoutes);
 
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));

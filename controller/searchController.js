@@ -50,15 +50,65 @@ exports.new = (req,res) => {
 exports.one = (req,res)=>{
     SearchModel.findById(req.params.home_id, (err,home)=>{
         if(err){
-            res.status(404).send(err);
+            res.json(err);
         }
-        res.writeHead(200, { 'Content-Type': 'text/json',
-    }).json({
-            message: "home loading",
+        res.json({
+            message: "Home loading",
             data: home
 
         })
-        res.end();
         
     })
 }
+// Delete house by id
+exports.delete = (req,res)=>{
+    SearchModel.deleteOne({
+        _id:req.params.home_id
+    },(err, home)=>{
+        if(err)
+            res.send(err);
+        res.json({
+            status:'Success',
+            message: 'Home deleted'
+        })
+    })
+}
+// Filter by all parameters
+exports.allParameters = (req,res)=>{
+    console.log(parseInt(req.params.val));
+    console.log(req.params.to);
+        SearchModel.find({$or: [{
+        price : req.params.val,
+        type: req.params.type,
+        bedrooms: req.params.beds,
+        bathrooms: req.params.baths,
+        equipment: req.params.equipment,
+        condition: req.params.condition
+        }]},
+        (err,home)=>{
+        if(err){
+            res.json(err);
+        }
+        res.json({
+            message:"Homes by parameters loading",
+            data:home
+        })
+    })
+}
+
+// Price filter From 0 to 2000 
+exports.priceFromTo = (req,res) =>{
+    SearchModel.find({$and: [{
+        price:  {$gte: req.params.from , $lte: req.params.to},
+        price:  {$lte: req.params.to, $gte:req.params.from}
+    }]},
+        (err,home)=>{
+            if(err){
+                res.json(err);
+            }
+            res.json({
+                message: "Homes filter by price From <> TO",
+                data:home
+            })
+        })
+    }

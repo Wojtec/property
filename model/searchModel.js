@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
-
-//setup schema
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+//setup home schema
 let homeSchema = mongoose.Schema({
 
     image: {
