@@ -1,3 +1,5 @@
+// dotenv config
+require('dotenv').config();
 //import express
 const express = require('express');
 // initialise app
@@ -6,10 +8,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 //import bodyparser
 const bodyParser = require('body-parser');
-//import mongoose
-const mongoose = require('mongoose');
 // import url db config
 const dbUrl = require('./config/dbconfig');
+//import mongoose
+const mongoose = require('mongoose');
 //import routes
 const apiRoutes = require('./routing/routing');
 // configure bodyparser to handle post request 
@@ -19,7 +21,12 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 //connection to Mongoose and set connection variable
-mongoose.connect(dbUrl.url,{ useNewUrlParser: true,useUnifiedTopology: true});
+mongoose.connect(dbUrl.url,{
+   useNewUrlParser: true,
+   useUnifiedTopology: true,
+   useFindAndModify: false,
+   useCreateIndex: true
+  });
 let db = mongoose.connection;
 // check if db is connected
 if(!db){
@@ -28,10 +35,14 @@ if(!db){
   console.log("Connected successfully to server");
 }
 
-
-
+//route for index
 app.use('/',apiRoutes);
+//route for home table
 app.use('/home',apiRoutes);
+//route for office table
+app.use('/office',apiRoutes);
+//route get location
+app.use('/location',apiRoutes);
 
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));
