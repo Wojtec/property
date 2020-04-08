@@ -37,6 +37,8 @@ if(!db){
 
 //route for index
 app.use('/',apiRoutes);
+//route for user
+app.use('/user',apiRoutes);
 //route for home table
 app.use('/home',apiRoutes);
 //route for office table

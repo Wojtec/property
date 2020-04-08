@@ -32,10 +32,10 @@ module.exports = {
    local.date = req.body.date
    console.log(local);
 //save office in db
-local.save((err)=>{
-    if(err){
-        res.status(500).json(err);
-    }
+    local.save((err)=>{
+        if(err){
+            res.status(500).json(err);
+        }
     res.json({
         message: 'New Office add ++',
         data: local
@@ -68,11 +68,10 @@ local.save((err)=>{
         })
     },
 //Filter by all parameters
-    findByParams: (req,res)=>{
+    findByPrice: (req,res)=>{
         OfficeModel.find({$or: [{
             buyRent: req.params.buyRent,
             city: req.params.city,
-            building_use: req.params.building_use,
             price: req.params.price
         }]}, (err,office)=>{
             if(err){
@@ -89,8 +88,6 @@ local.save((err)=>{
         OfficeModel.find({$and: [{
             buyRent: req.params.buyRent,
             city: req.params.city,
-            building_use: req.params.building_use,
-            price: req.params.price,
             price: {$gte: req.params.from , $lte: req.params.to},
             price: {$lte: req.params.to, $gte: req.params.from }
         }]},(err,office)=>{
@@ -124,20 +121,18 @@ local.save((err)=>{
         })
 
     },
+// Date filter from to 
     findByDate: (req,res)=>{
         const today = new Date();
         const configDate = new Date(today);
         if(req.params.date == 24){
-            configDate.setDate(configDate.getDate() - 2);
+            configDate.setDate(configDate.getDate() - 1);
         }if(req.params.date == 7){
             configDate.setDate(configDate.getDate() - 7);
-
         }if(req.params.date == 31){
             configDate.setMonth(configDate.getMonth() - 1);
         }
-
             OfficeModel.find({ 
-
                 date: { $lte: new Date(today), $gte: new Date(configDate)}
 
             },(err,office)=>{
@@ -145,7 +140,7 @@ local.save((err)=>{
                 res.status(500).json(err);
             }
             res.json({
-                message: "offices by date loades",
+                message: "offices by date loaded",
                 data: office
             })
         })

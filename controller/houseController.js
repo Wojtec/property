@@ -1,9 +1,9 @@
-const SearchModel = require('../model/homeModel');
+const HomeModel = require('../model/homeModel');
 module.exports = {
 
 //handle index actions
     index: (req,res)=>{
-    SearchModel.get((err,home)=>{
+    HomeModel.get((err,home)=>{
        if(err){
            res.json({
                status: "error",
@@ -11,7 +11,7 @@ module.exports = {
            });   
        }
        res.json({
-           status: "succes",
+           status: "Success",
            message: "Houses list",
            data: home
        });
@@ -19,7 +19,7 @@ module.exports = {
 },
 //handle create house
    new: (req,res) => {
-   let house = new SearchModel();
+   let house = new HomeModel();
    house.street = req.body.street,
    house.city = req.body.city,
    house.postCode = req.body.postCode,
@@ -48,7 +48,7 @@ module.exports = {
 },
 // select one house
    one: (req,res)=>{
-   SearchModel.findById(req.params.home_id, (err,home)=>{
+   HomeModel.findById(req.params.home_id, (err,home)=>{
        if(err){
            res.json(err);
        }
@@ -62,7 +62,7 @@ module.exports = {
 },
 // Delete house by id
    delete: (req,res)=>{
-   SearchModel.deleteOne({
+   HomeModel.deleteOne({
        _id:req.params.home_id
    },(err)=>{
        if(err)
@@ -75,9 +75,7 @@ module.exports = {
 },
 // Filter by all parameters
    allParameters: (req,res)=>{
-   console.log(parseInt(req.params.val));
-   console.log(req.params.to);
-       SearchModel.find({$or: [{
+       HomeModel.find({$or: [{
        price : req.params.val,
        type: req.params.type,
        bedrooms: req.params.beds,
@@ -97,9 +95,7 @@ module.exports = {
 },
 // Price filter From 0 to 2000 
    priceFromTo: (req,res) =>{
-   console.log(parseInt(req.params.from));
-   console.log(req.params.to);
-   SearchModel.find({$and: [{
+   HomeModel.find({$and: [{
        price:  {$gte: req.params.from , $lte: req.params.to},
        price:  {$lte: req.params.to, $gte:req.params.from}
    }]},

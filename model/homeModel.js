@@ -88,9 +88,7 @@ homeSchema.pre('save', async function(next){
         type: 'Point',
         coordinates: [loc[0].longitude,loc[0].latitude],
     }
-    console.log(next);
     next();
-    
 })
 
 //Export home model
