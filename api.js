@@ -2,6 +2,8 @@
 require('dotenv').config();
 //import express
 const express = require('express');
+//import session express
+session = require('express-session');
 // initialise app
 const app = express();
 //setup port
@@ -12,9 +14,16 @@ const bodyParser = require('body-parser');
 const dbUrl = require('./config/dbconfig');
 //import mongoose
 const mongoose = require('mongoose');
-//import routes
-const apiRoutes = require('./routing/routing');
-// configure bodyparser to handle post request 
+//import user routes
+const userRoutes = require('./routing/user');
+//import home routes
+const homeRoutes = require('./routing/home');
+//import office routes
+const officeRoutes = require('./routing/office');
+
+//session initialize
+app.use(session({secret: 'cookie'}));
+// configure bodyparser to handle post request
 app.use(bodyParser.urlencoded({
   extended: true
 }))
@@ -35,16 +44,14 @@ if(!db){
   console.log("Connected successfully to server");
 }
 
-//route for index
-app.use('/',apiRoutes);
+
 //route for user
-app.use('/user',apiRoutes);
+app.use('/user',userRoutes);
 //route for home table
-app.use('/home',apiRoutes);
+app.use('/home',homeRoutes);
 //route for office table
-app.use('/office',apiRoutes);
-//route get location
-app.use('/location',apiRoutes);
+app.use('/office',officeRoutes);
+
 
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));

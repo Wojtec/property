@@ -1,3 +1,3 @@
 module.exports = {
-    url: 'mongodb://localhost:27017/property'
+    url: process.env.DB_CONNECTION
 }

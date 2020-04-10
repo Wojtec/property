@@ -31,8 +31,8 @@ let homeSchema = mongoose.Schema({
         }
     },
     image: {
-        type: String,
-        required: true
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Image'
     },
     title: {
         type: String,
