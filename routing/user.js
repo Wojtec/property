@@ -1,15 +1,18 @@
 const router = require('express').Router();
 const userController = require('../controller/userController');
 const upload = require('../libs/multer');
-
+const verifyToken = require('../libs/verifyToken');
 //USER
-//create new user
+//Register new user
 router.route('/register')
 .get(userController.getUserList)
 .post(userController.new);
 //get me test 
 router.route('/me')
-.get(userController.test);
+.get(verifyToken,userController.meTest);
+//Login user
+router.route('/login')
+.post(userController.login);
 //get user by id 
 router.route('/:id')
 .get(userController.getOneUser)
@@ -23,7 +26,6 @@ router.route('/:id/home/:home_id/image')
 //post office to user by id
 router.route('/:id/office')
 .post(userController.userCollectionOffice);
-
 
 
 // export api routes

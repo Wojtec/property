@@ -9,10 +9,35 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs');
 module.exports = {
+//Login user
+login: (req,res)=>{
+UserModel.findOne({email: req.body.email},(err,user)=>{
+    if(err){
+        return res.status(500).send("Error on the server");
+    }
+    if(!user){
+        return res.status(404).send("No user found");
+    }
+    let passwordValidation = bcrypt.compareSync(req.body.password, user.password);
+    if(!passwordValidation){
+        return res.status(401).json({
+            auth: false,
+            token: null
+        })
+    }
+    let token = jwt.sign({id: user._id}, config.secret,{
+        expiresIn: 86400 // expires in 24 hours
+    });
+    res.status(200).json({
+        auth: true,
+        token: token
+    })
+})
+},
 //me test 
-test:(req,res)=>{
+meTest:(req,res, next)=>{
+    console.log(next);
 let token =  req.headers['x-access-token'];
-console.log(req.headers);
 if(!token){
     return res.status(401).json({
         auth: false,
@@ -37,11 +62,12 @@ UserModel.findById(decoded.id,{password: 0},(err,user)=>{
         message: "User found",
         data: user
     });
+ 
 })
 })
 
 },
-//add new users
+//Register add new users
 new:(req,res)=>{
 let hashPassword = bcrypt.hashSync(req.body.password);
 let user = new UserModel();
