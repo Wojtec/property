@@ -4,10 +4,12 @@ const upload = require('../libs/multer');
 
 //USER
 //create new user
-router.route('/')
+router.route('/register')
 .get(userController.getUserList)
 .post(userController.new);
-
+//get me test 
+router.route('/me')
+.get(userController.test);
 //get user by id 
 router.route('/:id')
 .get(userController.getOneUser)

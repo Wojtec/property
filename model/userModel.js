@@ -15,7 +15,7 @@ let userSchema = mongoose.Schema({
         require: true
     },
     password: {
-        type: Number,
+        type: String,
         require: true
     },
     home:{
