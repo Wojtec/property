@@ -141,6 +141,49 @@
         "content": {}
       }
     }
+  },
+  "/user/{:id}": {
+    "get":{
+      "tags": [
+        "user"
+      ],
+      "summary": "Get user by id",
+      "description": "This endpoint display user by id",
+      "requestBody": {
+        "description":"Login user",
+        "content": {
+          "application/json": {
+            "schema": {
+              
+                "name": ":id",
+                "in": "body",
+                "description": "this is the unique name of user",
+                "required": true,
+                "type": "string"
+              
+            }
+          }
+        }
+      },
+    "responses": {
+      "200": {
+        "description": "successful operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/user/properties"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Invalid status value",
+        "content": {}
+      }
+    }
   }
 },
 
@@ -238,4 +281,4 @@
 
 }
 }
-
+}

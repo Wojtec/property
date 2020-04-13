@@ -107,6 +107,7 @@ getUserList:(req,res)=>{
 },
 // get one user
 getOneUser: (req,res)=>{
+    console.log(req)
     UserModel.findById(req.params.id,(err,user)=>{
         if(err){
             res.json(err);
