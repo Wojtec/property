@@ -104,8 +104,43 @@
     }
   }
   },
-  "user/login": {
-    
+  "/user/login": {
+    "post": {
+      "tags": [
+        "user"
+      ],
+      "summary": "POST login user",
+      "description":"Login user",
+      "requestBody": {
+        "description":"Login user",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description" : "successful operation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref" :"#/components/schemas/user/properties"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Invalid status value",
+        "content": {}
+      }
+    }
   }
 },
 
