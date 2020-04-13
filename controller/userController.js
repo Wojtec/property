@@ -69,6 +69,7 @@ UserModel.findById(decoded.id,{password: 0},(err,user)=>{
 },
 //Register add new users
 new:(req,res)=>{
+    console.log(req);
 let hashPassword = bcrypt.hashSync(req.body.password);
 let user = new UserModel();
 user.name = req.body.name,

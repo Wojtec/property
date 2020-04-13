@@ -2,8 +2,6 @@
 require('dotenv').config();
 //import express
 const express = require('express');
-//import session express
-session = require('express-session');
 // initialise app
 const app = express();
 //setup port
@@ -20,9 +18,14 @@ const userRoutes = require('./routing/user');
 const homeRoutes = require('./routing/home');
 //import office routes
 const officeRoutes = require('./routing/office');
+//import swagger ui
+const swagger = require('swagger-ui-express');
+//import open Api documentation
+const openApi = require('./openapi/openApi');
 
-//session initialize
-app.use(session({secret: 'cookie'}));
+app.use('/open',swagger.serve, swagger.setup(openApi));
+
+
 // configure bodyparser to handle post request
 app.use(bodyParser.urlencoded({
   extended: true

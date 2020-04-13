@@ -3,9 +3,11 @@ const userController = require('../controller/userController');
 const upload = require('../libs/multer');
 const verifyToken = require('../libs/verifyToken');
 //USER
+//Get users list
+router.route('/')
+.get(userController.getUserList);
 //Register new user
 router.route('/register')
-.get(userController.getUserList)
 .post(userController.new);
 //get me test 
 router.route('/me')
@@ -30,3 +32,7 @@ router.route('/:id/office')
 
 // export api routes
 module.exports = router;
+
+
+
+
