@@ -11,6 +11,7 @@ const bcrypt = require('bcryptjs');
 module.exports = {
 //Login user
 login: (req,res)=>{
+    console.log(req.body);
 UserModel.findOne({email: req.body.email},(err,user)=>{
     if(err){
         return res.status(500).send("Error on the server");
@@ -18,7 +19,7 @@ UserModel.findOne({email: req.body.email},(err,user)=>{
     if(!user){
         return res.status(404).send("No user found");
     }
-    let passwordValidation = bcrypt.compareSync(req.body.password, user.password);
+    let passwordValidation = bcrypt.compare(req.body.password, user.password);
     if(!passwordValidation){
         return res.status(401).json({
             auth: false,
@@ -36,7 +37,6 @@ UserModel.findOne({email: req.body.email},(err,user)=>{
 },
 //me test 
 meTest:(req,res, next)=>{
-    console.log(next);
 let token =  req.headers['x-access-token'];
 if(!token){
     return res.status(401).json({

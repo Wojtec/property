@@ -43,7 +43,7 @@
       "tags": [
         "user"
       ],
-      "summary": "Get all users",
+      "summary": "GET all users",
       "description": "This endpoint display user list",
       "responses": {
         "200": {
@@ -53,7 +53,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/user/properties"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -78,7 +78,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/user"
+              "$ref": "#/components/schemas/User"
             }
           }
       }
@@ -91,7 +91,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/user/properties"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -110,16 +110,16 @@
         "user"
       ],
       "summary": "POST login user",
-      "description":"Login user",
       "requestBody": {
-        "description":"Login user",
+        "description": "List of user object",
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/user"
+              "$ref": "#/components/schemas/Login"
             }
           }
-        }
+        },
+        "required": true
       },
       "responses": {
         "200": {
@@ -129,7 +129,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref" :"#/components/schemas/user/properties"
+                  "$ref" :"#/components/schemas/Login"
                 }
               }
             }
@@ -142,59 +142,57 @@
       }
     }
   },
-  "/user/{:id}": {
+  "/user/{id}": {
     "get":{
       "tags": [
         "user"
       ],
-      "summary": "Get user by id",
-      "description": "This endpoint display user by id",
-      "requestBody": {
-        "description":"Login user",
-        "content": {
-          "application/json": {
-            "schema": {
-              
-                "name": ":id",
-                "in": "body",
+      "summary": "GET user by id",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
                 "description": "this is the unique name of user",
                 "required": true,
                 "type": "string"
-              
+                
             }
-          }
-        }
-      },
+          ],
     "responses": {
       "200": {
         "description": "successful operation",
         "content": {
           "application/json": {
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/user/properties"
-              }
+              "$ref": "#/components/schemas/User"
             }
           }
         }
       },
-      "400": {
-        "description": "Invalid status value",
-        "content": {}
-      }
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/User"
+        }
+      
+  },
+  "400": {
+    "description": "Invalid username supplied",
+    "content": {}
+  },
+  "404": {
+    "description": "User not found",
+    "content": {}
+  }
+    }
     }
   }
 },
-
-
-
-
 "components": {
   "schemas": {
-    "user": {
+    "User": {
       "type": "object",
       "properties": {
+        
         "name": {
           "type": "string",
           "unique": true,
@@ -203,6 +201,19 @@
         "email": {
           "type": "string",
           "unique": true,
+          "require": true
+        },
+        "password": {
+          "type": "string",
+          "require": true
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
           "require": true
         },
         "password": {
@@ -279,6 +290,6 @@
 
 
 
+ }
 }
-}
-}
+
