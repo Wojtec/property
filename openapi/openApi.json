@@ -52,15 +52,29 @@
             "application/json": {
               "schema": {
                 "type": "array",
-                "items": {
                   "$ref": "#/components/schemas/User"
+                
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "home": [
+                      "5e8fbaa0dafefd392b6a0fed"
+                    ],
+                    "office": [],
+                    "_id": "5e8f70a9245a470fb8942738",
+                    "name": "test",
+                    "email": "test@test.com",
+                    "password": "12345",
+                    "__v": 0
+                  }
                 }
               }
             }
           }
         },
         "400": {
-          "description": "Invalid status value",
+          "description": "Invalid tag value",
           "content": {}
         }
       }
@@ -81,7 +95,8 @@
               "$ref": "#/components/schemas/User"
             }
           }
-      }
+      },
+      "required": true
     },
       "responses": {
         "200": {
@@ -89,18 +104,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
+                "type":"array",
                 "items": {
                   "$ref": "#/components/schemas/User"
                 }
               }
             }
         }
-      } 
-    },
-    "400": {
-      "description": "Invalid status value",
-      "content": {}
+      },
+      "400": {
+        "description": "Invalid status value",
+        "content": {}
+      }
     }
   }
   },
@@ -127,18 +142,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
                 "items": {
                   "$ref" :"#/components/schemas/Login"
                 }
               }
             }
           }
-        }
-      },
+        },
       "400": {
         "description": "Invalid status value",
         "content": {}
+      }
       }
     }
   },
@@ -169,24 +183,58 @@
           }
         }
       },
-      "application/json": {
-        "schema": {
-          "$ref": "#/components/schemas/User"
+        "400": {
+          "description": "Invalid username supplied",
+          "content": {}
+        },
+        "404": {
+          "description": "User not found",
+          "content": {}
         }
-      
-  },
-  "400": {
-    "description": "Invalid username supplied",
-    "content": {}
-  },
-  "404": {
-    "description": "User not found",
-    "content": {}
-  }
+      }
     }
+  },
+  "/user/{id}/home": {
+    "post": {
+      "tags": [
+        "user"
+      ],
+      "summary": "POST home by user id",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "this is the unique name of user",
+          "required": true,
+          "type": "string"
+          
+      }
+    ],
+    "requestBody": {
+      "description": "List of user object",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "$ref": "#/components/schemas/Home"
+          }
+        }
+      },
+      "required": true
+    },
+      "responses": {
+        "200": {
+          "description" : "successful operation"
+
+        },
+      "400": {
+        "description": "Invalid status value",
+        "content": {}
+      }
+     }
     }
-  }
-},
+   }
+  },
 "components": {
   "schemas": {
     "User": {
@@ -206,6 +254,14 @@
         "password": {
           "type": "string",
           "require": true
+        },
+        "home": {
+          "type": "array",
+          "readOnly": true
+        },
+        "office": {
+          "type": "array",
+          "readOnly": true
         }
       }
     },
@@ -219,6 +275,82 @@
         "password": {
           "type": "string",
           "require": true
+        }
+      }
+    },
+    "Home": {
+      "type": "object",
+      "properties": {
+
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "postCode": {
+          "type": "number",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "location": {
+           "type": {
+             "type": "string",
+             "enum": "number"
+           },
+           "coordinates": {
+             "type": "number",
+             "index": "2dsphere"
+           },
+           "readOnly": true
+        },
+        "type": {
+          "type": "string",
+          "required": true
+        },
+        "condition": {
+          "type": "string",
+          "required": true
+        },
+        "equipment": {
+          "type": "string",
+          "required": true
+        },
+        "bathrooms": {
+          "type": "number",
+          "required": true
+        },
+        "bedrooms": {
+          "type": "number",
+          "required": true
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "required": true
+        },
+        "image": {
+          "type": "array",
+            "readOnly": true
+        },
+        "buyRent": {
+          "type": "boolean",
+          "required": true
+        },
+        "date": {
+          "type": "string"
         }
       }
     },
@@ -286,10 +418,6 @@
     }
     
     }
-
-
-
-
  }
 }
 

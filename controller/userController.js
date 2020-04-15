@@ -121,6 +121,7 @@ getOneUser: (req,res)=>{
 //HOUSE
 // add new house by user id
 userCollectionHouse:(req,res)=>{
+    console.log(req.body);
 // save new house
 HomeModel.create(req.body)
 // update user home after save
