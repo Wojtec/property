@@ -17,11 +17,11 @@ router.route('/:buyRent/:city')
 .get(officeController.filterBuyRentCity);
 
 //route for date 
-router.route('/:buyRent/:city/:date')
+router.route('/:buyRent/:city/:date/byDate')
 .get(officeController.findByDate);
 
 //route for filter offices by parameters by price
-router.route('/:buyRent/:city/:price')
+router.route('/:buyRent/:city/:price/byPrice')
 .get(officeController.findByPrice);
 
 //route for fillter office by price From To
@@ -29,7 +29,8 @@ router.route('/:buyRent/:city/:from/:to')
 .get(officeController.priceFilterOffice);
 
 //route for fillter by all parameters
-router.route('/:buyRent/:city/:building_use/:from/:to/:date')
+router.route('/buyRent/city/:building_use/:from/:to/:date')
+.get(officeController.allParameters);
 
 // export api routes
 module.exports = router;

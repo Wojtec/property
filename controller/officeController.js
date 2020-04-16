@@ -69,7 +69,8 @@ module.exports = {
     },
 //Filter by all parameters
     findByPrice: (req,res)=>{
-        OfficeModel.find({$or: [{
+        console.log(req);
+        OfficeModel.find({$and: [{
             buyRent: req.params.buyRent,
             city: req.params.city,
             price: req.params.price
@@ -78,7 +79,7 @@ module.exports = {
                 res.status(500).json(err);
             }
             res.json({
-                message: "Offices by parameters loading",
+                message: "Offices by price loading",
                 data: office
             })
         })
@@ -121,8 +122,36 @@ module.exports = {
         })
 
     },
+// Filter by all parameters
+   allParameters: (req,res)=>{
+    const today = new Date();
+    const configDate = new Date(today);
+    if(req.params.date == 24){
+        configDate.setDate(configDate.getDate() - 1);
+    }if(req.params.date == 7){
+        configDate.setDate(configDate.getDate() - 7);
+    }if(req.params.date == 31){
+        configDate.setMonth(configDate.getMonth() - 1);
+    }
+    OfficeModel.find({$and: [
+    {building_use: req.params.building_use},
+    {price: {$gte: req.params.from , $lte: req.params.to}},
+    {date: { $lte: new Date(today), $gte: new Date(configDate)}},
+    ]},
+    (err,office)=>{
+    if(err){
+        res.json(err);
+    }
+    res.json({
+        message:"Offices by all parameters loading",
+        data: office
+    })
+})
+},
+
 // Date filter from to 
     findByDate: (req,res)=>{
+       
         const today = new Date();
         const configDate = new Date(today);
         if(req.params.date == 24){

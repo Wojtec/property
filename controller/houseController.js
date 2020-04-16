@@ -97,7 +97,6 @@ module.exports = {
    priceFromTo: (req,res) =>{
    HomeModel.find({$and: [{
        price:  {$gte: req.params.from , $lte: req.params.to},
-       price:  {$lte: req.params.to, $gte:req.params.from}
    }]},
        (err,home)=>{
            if(err){
