@@ -1,5 +1,5 @@
 {
-"openapi": "3.0.1",
+"openapi": "3.0.0",
 "info": {
   "title": "Property API",
   "description": "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.",
@@ -94,23 +94,13 @@
             "schema": {
               "$ref": "#/components/schemas/User"
             }
-          }
+        }
       },
       "required": true
     },
       "responses": {
         "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type":"array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-        }
+          "description": "successful operation"
       },
       "400": {
         "description": "Invalid status value",
@@ -138,21 +128,12 @@
       },
       "responses": {
         "200": {
-          "description" : "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "items": {
-                  "$ref" :"#/components/schemas/Login"
-                }
-              }
-            }
-          }
+          "description" : "successful operation"
         },
       "400": {
         "description": "Invalid status value",
         "content": {}
-      }
+        }
       }
     }
   },
@@ -163,14 +144,15 @@
       ],
       "summary": "GET user by id",
             "parameters": [
+
               {
                 "name": "id",
                 "in": "path",
                 "description": "this is the unique name of user",
                 "required": true,
-                "type": "string"
-                
+                "type": "string" 
             }
+
           ],
     "responses": {
       "200": {
@@ -178,7 +160,21 @@
         "content": {
           "application/json": {
             "schema": {
+              "type": "array",
               "$ref": "#/components/schemas/User"
+            },
+            "examples":{
+              "User": {
+                "value": {
+                  "home": [],
+                  "office": [],
+                  "_id": "5e96074314e61307fed86e6a",
+                  "name": "tests",
+                  "email": "ss@gmail.com",
+                  "password": "$2a$10$kIRp7f3K5G0kcnGn9HyX6.5ASD/4ZN2LCCIYVKEZSXqsJEQ8dO7SW",
+                  "__v": 0
+                }
+              }
             }
           }
         }
@@ -204,7 +200,7 @@
         {
           "name": "id",
           "in": "path",
-          "description": "this is the unique name of user",
+          "description": "this is the user id",
           "required": true,
           "type": "string"
           
@@ -225,7 +221,6 @@
       "responses": {
         "200": {
           "description" : "successful operation"
-
         },
       "400": {
         "description": "Invalid status value",
@@ -233,8 +228,290 @@
       }
      }
     }
-   }
+   },
+  "/user/home/{home_id}/image": {
+    "post": {
+       "tags": [
+         "user"
+       ],
+       "summary": "POST image to home by id",
+       "parameters": [
+        {
+          "name": "home_id",
+          "in": "path",
+          "description": "This is home id",
+          "require": true,
+          "type": "string"
+        }
+       ],
+       "requestBody": {
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              
+              "properties": {
+                "additionalMetadata": {
+                  "type": "string",
+                  "description": "Additional data to pass to server"
+                },
+                "file": {
+                  "type": "object",
+                  "description": "file to upload",
+                  "format": "binary"
+                }
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "image/png",
+                  "headers":{
+                    "X-custom-header": {
+                      "description": "this is custom header",
+                      "schema": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        
+        }
+      },
+       "responses": {
+        "200": {
+          "description": "successful operation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiResponse"
+              }
+            }
+          }
+        }
+      }
+     }
+   },
+   "/user/{id}/office": {
+    "post": {
+      "tags": [
+        "user"
+      ],
+      "summary": "POST office by user id",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "this is the user id",
+          "required": true,
+          "type": "string"
+          
+      }
+    ],
+    "requestBody": {
+      "description": "List of user object",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "$ref": "#/components/schemas/Office"
+          }
+        }
+      },
+      "required": true
+    },
+      "responses": {
+        "200": {
+          "description" : "successful operation"
+        },
+      "400": {
+        "description": "Invalid status value",
+        "content": {}
+      }
+     }
+    }
+   },
+  "/user/office/{office_id}/image": {
+    "post": {
+       "tags": [
+         "user"
+       ],
+       "summary": "POST image to office by id",
+       "parameters": [
+        {
+          "name": "office_id",
+          "in": "path",
+          "description": "This is office id",
+          "require": true,
+          "type": "string"
+        }
+       ],
+       "requestBody": {
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              
+              "properties": {
+                "additionalMetadata": {
+                  "type": "string",
+                  "description": "Additional data to pass to server"
+                },
+                "file": {
+                  "type": "object",
+                  "description": "file to upload",
+                  "format": "binary"
+                }
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "image/png",
+                  "headers":{
+                    "X-custom-header": {
+                      "description": "this is custom header",
+                      "schema": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        
+        }
+      },
+       "responses": {
+        "200": {
+          "description": "successful operation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiResponse"
+              }
+            }
+          }
+        }
+      }
+     }
+   },
+   "/office": {
+    "get": {
+      "tags": [
+        "office"
+      ],
+      "summary": "GET all offices",
+      "description": "This endpoint display office list",
+      "responses": {
+        "200": {
+          "description": "successful operation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                  "$ref": "#/components/schemas/Office"
+                
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "location": {
+                      "type": "Point",
+                      "coordinates": [
+                        -111.109421,
+                        43.585147
+                      ]
+                    },
+                    "image": [],
+                    "_id": "5e986e2b92ea60ef4e43e8ae",
+                    "street": "string",
+                    "city": "string",
+                    "postCode": 0,
+                    "country": "string",
+                    "building_use": "string",
+                    "title": "string",
+                    "description": "string",
+                    "price": 0,
+                    "buyRent": true,
+                    "date": "2020-04-06T06:01:17.171Z",
+                    "__v": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid tag value",
+          "content": {}
+        }
+      }
+    }
   },
+  "/office/{id}": {
+    "get": {
+      "tags": [
+        "office"
+      ],
+      "summary": "GET all offices",
+      "description": "This endpoint display office by ID",
+      "parameters": [
+
+        {
+          "name": "id",
+          "in": "path",
+          "description": "this is the unique name of user",
+          "required": true,
+          "type": "string" 
+      }
+
+    ],
+      "responses": {
+        "200": {
+          "description": "successful operation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                  "$ref": "#/components/schemas/Office"
+                
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "location": {
+                      "type": "Point",
+                      "coordinates": [
+                        -111.109421,
+                        43.585147
+                      ]
+                    },
+                    "image": [],
+                    "_id": "5e986e2b92ea60ef4e43e8ae",
+                    "street": "string",
+                    "city": "string",
+                    "postCode": 0,
+                    "country": "string",
+                    "building_use": "string",
+                    "title": "string",
+                    "description": "string",
+                    "price": 0,
+                    "buyRent": true,
+                    "date": "2020-04-06T06:01:17.171Z",
+                    "__v": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid tag value",
+          "content": {}
+        }
+      }
+    }
+  }
+},
 "components": {
   "schemas": {
     "User": {
@@ -354,13 +631,9 @@
         }
       }
     },
-    "office": {
+    "Office": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
         "street": {
           "type": "string",
           "required": true
@@ -385,7 +658,8 @@
            "coordinates": {
              "type": "number",
              "index": "2dsphere"
-           }
+           },
+           "readOnly": true
         },
         "building_use": {
           "type": "string",
@@ -404,20 +678,34 @@
           "required": true
         },
         "image": {
-          "type": "string",
-          "required": true
+          "type": "array",
+           "readOnly": true
         },
         "buyRent": {
           "type": "boolean",
           "required": true
         },
         "date": {
-          "type": "date"
+          "type": "string"
         }
+    }
+   },
+   "ApiResponse": {
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "integer",
+        "format": "int32"
+      },
+      "type": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
       }
     }
-    
-    }
+  }
+  }
  }
 }
 

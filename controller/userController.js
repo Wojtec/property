@@ -4,7 +4,6 @@ const OfficeModel = require('../model/officeModel');
 const ImageModel = require('../model/imageModel');
 
 const fs = require('fs');
-const VerifyToken = require('../libs/verifyToken');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs');
@@ -69,7 +68,6 @@ UserModel.findById(decoded.id,{password: 0},(err,user)=>{
 },
 //Register add new users
 new:(req,res)=>{
-    console.log(req);
 let hashPassword = bcrypt.hashSync(req.body.password);
 let user = new UserModel();
 user.name = req.body.name,
@@ -121,7 +119,6 @@ getOneUser: (req,res)=>{
 //HOUSE
 // add new house by user id
 userCollectionHouse:(req,res)=>{
-    console.log(req.body);
 // save new house
 HomeModel.create(req.body)
 // update user home after save
@@ -144,7 +141,32 @@ HomeModel.create(req.body)
 },
 //Image
 //add new image by house id 
-addImage: (req, res)=>{
+addImageOffice: (req, res)=>{
+    console.log(req);
+    let img = new ImageModel;
+    img.image.data = fs.readFileSync(req.file.path);
+    img.image.contentType = req.file.mimetype;
+    ImageModel.create(img)
+    .then((dbImage)=>{
+        return OfficeModel.findByIdAndUpdate(
+            {_id: req.params.office_id},
+            {$push: {image: dbImage._id}},
+            {new: true}
+        );
+    })
+    .then((officeModel)=>{
+        res.json({
+            message: 'Update image success',
+            data: officeModel
+        })
+    })
+    .catch((err)=>{
+        res.json(err);
+    })
+},
+//add new image by house id 
+addImageHouse: (req, res)=>{
+    console.log(req);
     let img = new ImageModel;
     img.image.data = fs.readFileSync(req.file.path);
     img.image.contentType = req.file.mimetype;
