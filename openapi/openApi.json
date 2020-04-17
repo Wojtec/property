@@ -247,32 +247,17 @@
        "requestBody": {
         "content": {
           "multipart/form-data": {
-            "schema": {
-              
-              "properties": {
-                "additionalMetadata": {
-                  "type": "string",
-                  "description": "Additional data to pass to server"
-                },
-                "file": {
-                  "type": "object",
-                  "description": "file to upload",
-                  "format": "binary"
-                }
-              },
-              "encoding": {
-                "file": {
-                  "contentType": "image/png",
-                  "headers":{
-                    "X-custom-header": {
-                      "description": "this is custom header",
-                      "schema": {
-                        "type": "string"
-                      }
-                    }
+            "schema":{
+              "type": "object",
+              "properties": 
+                {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
-              }
+              
+            
             }
           }
         
@@ -349,32 +334,17 @@
        "requestBody": {
         "content": {
           "multipart/form-data": {
-            "schema": {
-              
-              "properties": {
-                "additionalMetadata": {
-                  "type": "string",
-                  "description": "Additional data to pass to server"
-                },
-                "file": {
-                  "type": "object",
-                  "description": "file to upload",
-                  "format": "binary"
-                }
-              },
-              "encoding": {
-                "file": {
-                  "contentType": "image/png",
-                  "headers":{
-                    "X-custom-header": {
-                      "description": "this is custom header",
-                      "schema": {
-                        "type": "string"
-                      }
-                    }
+            "schema":{
+              "type": "object",
+              "properties": 
+                {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
-              }
+              
+            
             }
           }
         
@@ -452,14 +422,14 @@
       "tags": [
         "office"
       ],
-      "summary": "GET all offices",
+      "summary": "GET office by Id",
       "description": "This endpoint display office by ID",
       "parameters": [
 
         {
           "name": "id",
           "in": "path",
-          "description": "this is the unique name of user",
+          "description": "Write Id of office",
           "required": true,
           "type": "string" 
       }
@@ -516,21 +486,21 @@
       "tags": [
         "office"
       ],
-      "summary": "GET all offices",
-      "description": "This endpoint display office by ID",
+      "summary": "GET all offices by filter of type property for sell or rent and filter the city",
+      "description": "This endpoint display office by filter buyRent and city",
       "parameters": [
 
         {
           "name": "buyRent",
           "in": "path",
-          "description": "this is the unique name of user",
+          "description":"Write type boolean of property. True for sell, false for rent",
           "required": true,
           "type": "string" 
       },
       {
         "name": "city",
         "in": "path",
-        "description": "this is the unique name of user",
+        "description": "Write name of the city",
         "required": true,
         "type": "string" 
     }
@@ -586,104 +556,28 @@
       "tags": [
         "office"
       ],
-      "summary": "GET all offices",
-      "description": "This endpoint display office by ID",
+      "summary": "GET all offices by date",
+      "description": "This endpoint display office by date",
       "parameters": [
 
         {
           "name": "buyRent",
           "in": "path",
-          "description": "this is the unique name of user",
+          "description": "Write type boolean of property. True for sell, false for rent",
           "required": true,
           "type": "string" 
       },
       {
         "name": "city",
         "in": "path",
-        "description": "this is the unique name of user",
+        "description": "Write name of the city",
         "required": true,
         "type": "string" 
     },
     {
       "name": "date",
       "in": "path",
-      "description": "this is the unique name of user",
-      "required": true,
-      "type": "number" 
-  }
-    ],
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                  "$ref": "#/components/schemas/Office"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "location": {
-                      "type": "Point",
-                      "coordinates": [
-                        -111.109421,
-                        43.585147
-                      ]
-                    },
-                    "image": [],
-                    "_id": "5e986e2b92ea60ef4e43e8ae",
-                    "street": "string",
-                    "city": "string",
-                    "postCode": 0,
-                    "country": "string",
-                    "building_use": "string",
-                    "title": "string",
-                    "description": "string",
-                    "price": 0,
-                    "buyRent": true,
-                    "date": "2020-04-06T06:01:17.171Z",
-                    "__v": 0
-                  }
-                }
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
-        }
-      }
-    }
-  },
-  "/office/{buyRent}/{city}/{price}/byPrice": {
-    "get": {
-      "tags": [
-        "office"
-      ],
-      "summary": "GET all offices",
-      "description": "This endpoint display office by ID",
-      "parameters": [
-        {
-          "name": "buyRent",
-          "in": "path",
-          "description": "this is the unique name of user",
-          "required": true,
-          "type": "string" 
-      },
-        {
-          "name": "city",
-          "in": "path",
-          "description": "this is the unique name of user",
-          "required": true,
-          "type": "string" 
-      },
-    {
-      "name": "price",
-      "in": "path",
-      "description": "this is the unique name of user",
+      "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
       "required": true,
       "type": "number" 
   }
@@ -739,34 +633,34 @@
       "tags": [
         "office"
       ],
-      "summary": "GET all offices",
-      "description": "This endpoint display office by ID",
+      "summary": "GET all offices by filter price",
+      "description": "This endpoint display office by filter price from to",
       "parameters": [
         {
           "name": "buyRent",
           "in": "path",
-          "description": "this is the unique name of user",
+          "description": "this is the unique name of buyRent type boolean",
           "required": true,
           "type": "string" 
          },
         {
           "name": "city",
           "in": "path",
-          "description": "this is the unique name of user",
+          "description": "this is the unique name of city",
           "required": true,
           "type": "string" 
       },
       {
       "name": "from",
       "in": "path",
-      "description": "this is the unique name of user",
+      "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
       "required": true,
       "type": "number" 
        },
      {
       "name": "to",
       "in": "path",
-      "description": "this is the unique name of user",
+      "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
       "required": true,
       "type": "number" 
       }
@@ -822,35 +716,35 @@
       "tags": [
         "office"
       ],
-      "summary": "GET all offices",
-      "description": "This endpoint display office by ID",
+      "summary": "GET offices by all parameters",
+      "description": "This endpoint display office by parameters",
       "parameters": [
         
       {
         "name": "building_use",
         "in": "path",
-        "description": "this is the unique name of user",
+        "description": "this is the unique name of building_use",
         "required": true,
         "type": "string" 
        },
        {
         "name": "date",
         "in": "path",
-        "description": "this is the unique name of user",
+        "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
         "required": true,
         "type": "string" 
     },
       {
       "name": "from",
       "in": "path",
-      "description": "this is the unique name of user",
+      "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
       "required": true,
       "type": "number" 
        },
      {
       "name": "to",
       "in": "path",
-      "description": "this is the unique name of user",
+      "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
       "required": true,
       "type": "number" 
       }
@@ -924,12 +818,12 @@
           "require": true
         },
         "home": {
-          "type": "array",
-          "readOnly": true
+          "type": "object",
+          "$ref": "#/components/schemas/Home"
         },
         "office": {
-          "type": "array",
-          "readOnly": true
+          "type": "object",
+          "$ref": "#/components/schemas/Office"
         }
       }
     },
@@ -1080,6 +974,13 @@
           "type": "string"
         }
     }
+   },
+   "image": {
+    "type" : "string",
+    "items" : {
+      "format" : "binary"
+    }
+
    },
    "ApiResponse": {
     "type": "object",
