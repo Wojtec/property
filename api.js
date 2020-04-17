@@ -8,10 +8,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 //import bodyparser
 const bodyParser = require('body-parser');
-// import url db config
-const dbUrl = require('./config/dbconfig');
 //import mongoose
 const mongoose = require('mongoose');
+// import url db config
+const dbUrl = require('./config/dbconfig');
 //import user routes
 const userRoutes = require('./routing/user');
 //import home routes
@@ -58,7 +58,7 @@ app.use('/',homeRoutes);
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));
 
-
+console.log(process.env);
 
 
 
