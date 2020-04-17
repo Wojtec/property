@@ -45,14 +45,15 @@ if(!db){
 }
 
 //swagger route
-app.use('/',swagger.serve, swagger.setup(openApi));
+app.use('/open',swagger.serve, swagger.setup(openApi));
 //route for user
 app.use('/user',userRoutes);
 //route for home table
 app.use('/home',homeRoutes);
 //route for office table
 app.use('/office',officeRoutes);
-
+//route for home table
+app.use('/',homeRoutes);
 
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));
