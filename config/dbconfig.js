@@ -2,5 +2,5 @@
 require('dotenv').config();
 
 module.exports = {
-    url: process.env["DB_CONNECTION"]
+    url: process.env.DB_CONNECTION
 }
