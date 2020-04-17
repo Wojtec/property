@@ -119,12 +119,13 @@ getOneUser: (req,res)=>{
 //HOUSE
 // add new house by user id
 userCollectionHouse:(req,res)=>{
+
 // save new house
 HomeModel.create(req.body)
 // update user home after save
 .then(function(dbHome){
   return  UserModel.findByIdAndUpdate(
-        {_id: req.params.id},
+        {_id: req.userId},
         {$push:{home: dbHome._id}},
         {new: true});
 })
@@ -139,8 +140,21 @@ HomeModel.create(req.body)
     res.json(err);
 })
 },
+// Delete house by id
+delete: (req,res)=>{
+    HomeModel.deleteOne({
+        _id:req.params.home_id
+    },(err)=>{
+        if(err)
+            res.send(err);
+        res.json({
+            status:'Success',
+            message: 'Home deleted'
+        })
+    })
+ },
 //Image
-//add new image by house id 
+//add new image by office id 
 addImageOffice: (req, res)=>{
     console.log(req);
     let img = new ImageModel;
@@ -208,7 +222,7 @@ OfficeModel.create(req.body)
 // update new office in user
 .then((dbOffice)=>{
     return UserModel.findByIdAndUpdate(
-        {_id: req.params.id},
+        {_id: req.userId},
         {$push: {office: dbOffice._id}},
         {new: true}
     );

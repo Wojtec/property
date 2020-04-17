@@ -73,15 +73,44 @@ module.exports = {
        })
    })
 },
+//Filter office by buyRent and city
+filterBuyRentCity: (req,res)=>{
+    HomeModel.find({ $and: [{
+        buyRent: req.params.buyRent,
+        city: req.params.city
+    }]},(err,home)=>{
+        if(err){
+            res.status(500).json(err)
+
+        }
+        res.json({
+            message: "Homes filter by buyRent and City",
+            data: home
+            
+        })
+
+    })
+
+},
 // Filter by all parameters
    allParameters: (req,res)=>{
+    const today = new Date();
+    const configDate = new Date(today);
+    if(req.params.date == 24){
+        configDate.setDate(configDate.getDate() - 1);
+    }if(req.params.date == 7){
+        configDate.setDate(configDate.getDate() - 7);
+    }if(req.params.date == 31){
+        configDate.setMonth(configDate.getMonth() - 1);
+    }
        HomeModel.find({$or: [{
-       price : req.params.val,
+       price: {$gte: req.params.from, $lte: req.params.to },
        type: req.params.type,
        bedrooms: req.params.beds,
        bathrooms: req.params.baths,
        equipment: req.params.equipment,
-       condition: req.params.condition
+       condition: req.params.condition,
+       date: { $lte: new Date(today), $gte: new Date(configDate)}
        }]},
        (err,home)=>{
        if(err){
@@ -92,6 +121,32 @@ module.exports = {
            data:home
        })
    })
+},
+// Date filter from to 
+findByDate: (req,res)=>{
+       
+    const today = new Date();
+    const configDate = new Date(today);
+    if(req.params.date == 24){
+        configDate.setDate(configDate.getDate() - 1);
+    }if(req.params.date == 7){
+        configDate.setDate(configDate.getDate() - 7);
+    }if(req.params.date == 31){
+        configDate.setMonth(configDate.getMonth() - 1);
+    }
+        HomeModel.find({ 
+            date: { $lte: new Date(today), $gte: new Date(configDate)}
+
+        },(err,office)=>{
+        if(err){
+            res.status(500).json(err);
+        }
+        res.json({
+            message: "Houses by date loaded",
+            data: office
+        })
+    })
+
 },
 // Price filter From 0 to 2000 
    priceFromTo: (req,res) =>{

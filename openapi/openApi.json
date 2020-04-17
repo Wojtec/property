@@ -1,1003 +1,1482 @@
 {
-"openapi": "3.0.0",
-"info": {
-  "title": "Property API",
-  "description": "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.",
-  "termsOfService": "http://swagger.io/terms/",
-  "contact": {
-    "email": "apiteam@swagger.io"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Property API",
+    "description": "This is a sample property server by Wojtek.",
+    "contact": {
+      "email": "poninski.w@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
   },
-  "license": {
-    "name": "Apache 2.0",
-    "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-  },
-  "version": "1.0.0"
-},
-"externalDocs": {
-  "description": "Find out more about Swagger",
-  "url": "http://swagger.io"
-},
-"servers": [
-  {
-    "url": "http://localhost:3000/"
-  }
+  "servers": [{
+      "url": "http://localhost:3000/"
+    }
 
-],
-"tags": [
-  {
-    "name": "user",
-    "description": "Operations about user"
-  },
-  {
-    "name": "office",
-    "description": "Operations about office"
-  },
-  {
-    "name": "home",
-    "description": "Operations about home"
-  }
-],
-"paths": {
-  "/user": {
-    "get": {
-      "tags": [
-        "user"
-      ],
-      "summary": "GET all users",
-      "description": "This endpoint display user list",
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
+  ],
+  "tags": [{
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "office",
+      "description": "Operations about office"
+    },
+    {
+      "name": "home",
+      "description": "Operations about home"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "GET all users",
+        "description": "This endpoint display user list",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
                   "$ref": "#/components/schemas/User"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "home": [
-                      "5e8fbaa0dafefd392b6a0fed"
-                    ],
-                    "office": [],
-                    "_id": "5e8f70a9245a470fb8942738",
-                    "name": "test",
-                    "email": "test@test.com",
-                    "password": "12345",
-                    "__v": 0
+
+                },
+                "examples": {
+                  "User": {
+                    "value": {
+                      "home": [
+                        "5e8fbaa0dafefd392b6a0fed"
+                      ],
+                      "office": [],
+                      "_id": "5e8f70a9245a470fb8942738",
+                      "name": "test",
+                      "email": "test@test.com",
+                      "password": "12345",
+                      "__v": 0
+                    }
                   }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
           }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
         }
       }
-    }
-  },
-  "/user/register": {
-    "post": {
-      "tags": [
-        "user"
-      ],
-      "summary":"POST register new user",
-      "description": "This endpoint let you register new user",
-      "requestBody": {
-        "description": "Create new user",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/User"
-            }
-        }
-      },
-      "required": true
     },
-      "responses": {
-        "200": {
-          "description": "successful operation"
-      },
-      "400": {
-        "description": "Invalid status value",
-        "content": {}
-      }
-    }
-  }
-  },
-  "/user/login": {
-    "post": {
-      "tags": [
-        "user"
-      ],
-      "summary": "POST login user",
-      "requestBody": {
-        "description": "List of user object",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Login"
+    "/user/register": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "POST register new user",
+        "description": "This endpoint let you register new user",
+        "requestBody": {
+          "description": "Create new user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
             }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {}
           }
-        },
-        "required": true
-      },
-      "responses": {
-        "200": {
-          "description" : "successful operation"
-        },
-      "400": {
-        "description": "Invalid status value",
-        "content": {}
         }
       }
-    }
-  },
-  "/user/{id}": {
-    "get":{
-      "tags": [
-        "user"
-      ],
-      "summary": "GET user by id",
-            "parameters": [
-
-              {
-                "name": "id",
-                "in": "path",
-                "description": "this is the unique name of user",
-                "required": true,
-                "type": "string" 
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "POST login user",
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
             }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "GET user by id",
+        "parameters": [
 
-          ],
-    "responses": {
-      "200": {
-        "description": "successful operation",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "array",
-              "$ref": "#/components/schemas/User"
-            },
-            "examples":{
-              "User": {
-                "value": {
-                  "home": [],
-                  "office": [],
-                  "_id": "5e96074314e61307fed86e6a",
-                  "name": "tests",
-                  "email": "ss@gmail.com",
-                  "password": "$2a$10$kIRp7f3K5G0kcnGn9HyX6.5ASD/4ZN2LCCIYVKEZSXqsJEQ8dO7SW",
-                  "__v": 0
+          {
+            "name": "id",
+            "in": "path",
+            "description": "this is the unique name of user",
+            "required": true,
+            "type": "string"
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "User": {
+                    "value": {
+                      "home": [],
+                      "office": [],
+                      "_id": "5e96074314e61307fed86e6a",
+                      "name": "tests",
+                      "email": "ss@gmail.com",
+                      "password": "$2a$10$kIRp7f3K5G0kcnGn9HyX6.5ASD/4ZN2LCCIYVKEZSXqsJEQ8dO7SW",
+                      "__v": 0
+                    }
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid username supplied",
+            "content": {}
+          },
+          "404": {
+            "description": "User not found",
+            "content": {}
           }
         }
-      },
-        "400": {
-          "description": "Invalid username supplied",
-          "content": {}
-        },
-        "404": {
-          "description": "User not found",
-          "content": {}
+      }
+    },
+    "/user/home/{home_id}": {
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "POST home by user id",
+        "parameters": [{
+            "name": "x-access-token",
+            "in": "header",
+            "description": "this is the user id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "home_id",
+            "in": "path",
+            "description": "this is the user id",
+            "required": true,
+            "type": "string"
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {}
+          }
         }
       }
-    }
-  },
-  "/user/{id}/home": {
-    "post": {
-      "tags": [
-        "user"
-      ],
-      "summary": "POST home by user id",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
+    },
+    "/user/home": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "POST home by user id",
+        "parameters": [{
+          "name": "x-access-token",
+          "in": "header",
           "description": "this is the user id",
           "required": true,
           "type": "string"
-          
-      }
-    ],
-    "requestBody": {
-      "description": "List of user object",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "$ref": "#/components/schemas/Home"
+
+        }],
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Home"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {}
           }
         }
-      },
-      "required": true
-    },
-      "responses": {
-        "200": {
-          "description" : "successful operation"
-        },
-      "400": {
-        "description": "Invalid status value",
-        "content": {}
       }
-     }
-    }
-   },
-  "/user/home/{home_id}/image": {
-    "post": {
-       "tags": [
-         "user"
-       ],
-       "summary": "POST image to home by id",
-       "parameters": [
-        {
+    },
+    "/user/home/{home_id}/image": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "POST image to home by id",
+        "parameters": [{
           "name": "home_id",
           "in": "path",
           "description": "This is home id",
           "require": true,
           "type": "string"
-        }
-       ],
-       "requestBody": {
-        "content": {
-          "multipart/form-data": {
-            "schema":{
-              "type": "object",
-              "properties": 
-                {
+        }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
                   "image": {
                     "type": "string",
                     "format": "binary"
                   }
                 }
-              
-            
+
+
+              }
             }
+
           }
-        
-        }
-      },
-       "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApiResponse"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
               }
             }
           }
         }
       }
-     }
-   },
-   "/user/{id}/office": {
-    "post": {
-      "tags": [
-        "user"
-      ],
-      "summary": "POST office by user id",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
+    },
+    "/user/office": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "POST office by user id",
+        "parameters": [{
+          "name": "x-access-token",
+          "in": "header",
           "description": "this is the user id",
           "required": true,
           "type": "string"
-          
-      }
-    ],
-    "requestBody": {
-      "description": "List of user object",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "$ref": "#/components/schemas/Office"
+
+        }],
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Office"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {}
           }
         }
-      },
-      "required": true
-    },
-      "responses": {
-        "200": {
-          "description" : "successful operation"
-        },
-      "400": {
-        "description": "Invalid status value",
-        "content": {}
       }
-     }
-    }
-   },
-  "/user/office/{office_id}/image": {
-    "post": {
-       "tags": [
-         "user"
-       ],
-       "summary": "POST image to office by id",
-       "parameters": [
-        {
+    },
+    "/user/office/{office_id}/image": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "POST image to office by id",
+        "parameters": [{
           "name": "office_id",
           "in": "path",
           "description": "This is office id",
           "require": true,
           "type": "string"
-        }
-       ],
-       "requestBody": {
-        "content": {
-          "multipart/form-data": {
-            "schema":{
-              "type": "object",
-              "properties": 
-                {
+        }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
                   "image": {
                     "type": "string",
                     "format": "binary"
                   }
                 }
-              
-            
-            }
-          }
-        
-        }
-      },
-       "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApiResponse"
-              }
-            }
-          }
-        }
-      }
-     }
-   },
-   "/office": {
-    "get": {
-      "tags": [
-        "office"
-      ],
-      "summary": "GET all offices",
-      "description": "This endpoint display office list",
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                  "$ref": "#/components/schemas/Office"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "location": {
-                      "type": "Point",
-                      "coordinates": [
-                        -111.109421,
-                        43.585147
-                      ]
-                    },
-                    "image": [],
-                    "_id": "5e986e2b92ea60ef4e43e8ae",
-                    "street": "string",
-                    "city": "string",
-                    "postCode": 0,
-                    "country": "string",
-                    "building_use": "string",
-                    "title": "string",
-                    "description": "string",
-                    "price": 0,
-                    "buyRent": true,
-                    "date": "2020-04-06T06:01:17.171Z",
-                    "__v": 0
-                  }
-                }
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
-        }
-      }
-    }
-  },
-  "/office/{id}": {
-    "get": {
-      "tags": [
-        "office"
-      ],
-      "summary": "GET office by Id",
-      "description": "This endpoint display office by ID",
-      "parameters": [
 
-        {
-          "name": "id",
-          "in": "path",
-          "description": "Write Id of office",
-          "required": true,
-          "type": "string" 
-      }
 
-    ],
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                  "$ref": "#/components/schemas/Office"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "location": {
-                      "type": "Point",
-                      "coordinates": [
-                        -111.109421,
-                        43.585147
-                      ]
-                    },
-                    "image": [],
-                    "_id": "5e986e2b92ea60ef4e43e8ae",
-                    "street": "string",
-                    "city": "string",
-                    "postCode": 0,
-                    "country": "string",
-                    "building_use": "string",
-                    "title": "string",
-                    "description": "string",
-                    "price": 0,
-                    "buyRent": true,
-                    "date": "2020-04-06T06:01:17.171Z",
-                    "__v": 0
-                  }
-                }
               }
             }
-          }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
-        }
-      }
-    }
-  },
-  "/office/{buyRent}/{city}": {
-    "get": {
-      "tags": [
-        "office"
-      ],
-      "summary": "GET all offices by filter of type property for sell or rent and filter the city",
-      "description": "This endpoint display office by filter buyRent and city",
-      "parameters": [
 
-        {
-          "name": "buyRent",
-          "in": "path",
-          "description":"Write type boolean of property. True for sell, false for rent",
-          "required": true,
-          "type": "string" 
-      },
-      {
-        "name": "city",
-        "in": "path",
-        "description": "Write name of the city",
-        "required": true,
-        "type": "string" 
-    }
-    ],
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                  "$ref": "#/components/schemas/Office"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "location": {
-                      "type": "Point",
-                      "coordinates": [
-                        -111.109421,
-                        43.585147
-                      ]
-                    },
-                    "image": [],
-                    "_id": "5e986e2b92ea60ef4e43e8ae",
-                    "street": "string",
-                    "city": "string",
-                    "postCode": 0,
-                    "country": "string",
-                    "building_use": "string",
-                    "title": "string",
-                    "description": "string",
-                    "price": 0,
-                    "buyRent": true,
-                    "date": "2020-04-06T06:01:17.171Z",
-                    "__v": 0
-                  }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
                 }
               }
             }
           }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
-        }
-      }
-    }
-  },
-  "/office/{buyRent}/{city}/{date}/byDate": {
-    "get": {
-      "tags": [
-        "office"
-      ],
-      "summary": "GET all offices by date",
-      "description": "This endpoint display office by date",
-      "parameters": [
-
-        {
-          "name": "buyRent",
-          "in": "path",
-          "description": "Write type boolean of property. True for sell, false for rent",
-          "required": true,
-          "type": "string" 
-      },
-      {
-        "name": "city",
-        "in": "path",
-        "description": "Write name of the city",
-        "required": true,
-        "type": "string" 
-    },
-    {
-      "name": "date",
-      "in": "path",
-      "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
-      "required": true,
-      "type": "number" 
-  }
-    ],
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                  "$ref": "#/components/schemas/Office"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "location": {
-                      "type": "Point",
-                      "coordinates": [
-                        -111.109421,
-                        43.585147
-                      ]
-                    },
-                    "image": [],
-                    "_id": "5e986e2b92ea60ef4e43e8ae",
-                    "street": "string",
-                    "city": "string",
-                    "postCode": 0,
-                    "country": "string",
-                    "building_use": "string",
-                    "title": "string",
-                    "description": "string",
-                    "price": 0,
-                    "buyRent": true,
-                    "date": "2020-04-06T06:01:17.171Z",
-                    "__v": 0
-                  }
-                }
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
-        }
-      }
-    }
-  },
-  "/office/{buyRent}/{city}/{from}/{to}": {
-    "get": {
-      "tags": [
-        "office"
-      ],
-      "summary": "GET all offices by filter price",
-      "description": "This endpoint display office by filter price from to",
-      "parameters": [
-        {
-          "name": "buyRent",
-          "in": "path",
-          "description": "this is the unique name of buyRent type boolean",
-          "required": true,
-          "type": "string" 
-         },
-        {
-          "name": "city",
-          "in": "path",
-          "description": "this is the unique name of city",
-          "required": true,
-          "type": "string" 
-      },
-      {
-      "name": "from",
-      "in": "path",
-      "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
-      "required": true,
-      "type": "number" 
-       },
-     {
-      "name": "to",
-      "in": "path",
-      "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
-      "required": true,
-      "type": "number" 
-      }
-    ],
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                  "$ref": "#/components/schemas/Office"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "location": {
-                      "type": "Point",
-                      "coordinates": [
-                        -111.109421,
-                        43.585147
-                      ]
-                    },
-                    "image": [],
-                    "_id": "5e986e2b92ea60ef4e43e8ae",
-                    "street": "string",
-                    "city": "string",
-                    "postCode": 0,
-                    "country": "string",
-                    "building_use": "string",
-                    "title": "string",
-                    "description": "string",
-                    "price": 0,
-                    "buyRent": true,
-                    "date": "2020-04-06T06:01:17.171Z",
-                    "__v": 0
-                  }
-                }
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
-        }
-      }
-    }
-  },
-  "/office/buyRent/city/{building_use}/{from}/{to}/{date}": {
-    "get": {
-      "tags": [
-        "office"
-      ],
-      "summary": "GET offices by all parameters",
-      "description": "This endpoint display office by parameters",
-      "parameters": [
-        
-      {
-        "name": "building_use",
-        "in": "path",
-        "description": "this is the unique name of building_use",
-        "required": true,
-        "type": "string" 
-       },
-       {
-        "name": "date",
-        "in": "path",
-        "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
-        "required": true,
-        "type": "string" 
-    },
-      {
-      "name": "from",
-      "in": "path",
-      "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
-      "required": true,
-      "type": "number" 
-       },
-     {
-      "name": "to",
-      "in": "path",
-      "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
-      "required": true,
-      "type": "number" 
-      }
-    ],
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                  "$ref": "#/components/schemas/Office"
-                
-              },
-              "examples": {
-                "User": {
-                  "value": {
-                    "location": {
-                      "type": "Point",
-                      "coordinates": [
-                        -111.109421,
-                        43.585147
-                      ]
-                    },
-                    "image": [],
-                    "_id": "5e986e2b92ea60ef4e43e8ae",
-                    "street": "string",
-                    "city": "string",
-                    "postCode": 0,
-                    "country": "string",
-                    "building_use": "string",
-                    "title": "string",
-                    "description": "string",
-                    "price": 0,
-                    "buyRent": true,
-                    "date": "2020-04-06T06:01:17.171Z",
-                    "__v": 0
-                  }
-                }
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Invalid tag value",
-          "content": {}
-        }
-      }
-    }
-  }
-
-},
-"components": {
-  "schemas": {
-    "User": {
-      "type": "object",
-      "properties": {
-        
-        "name": {
-          "type": "string",
-          "unique": true,
-          "require": true
-        },
-        "email": {
-          "type": "string",
-          "unique": true,
-          "require": true
-        },
-        "password": {
-          "type": "string",
-          "require": true
-        },
-        "home": {
-          "type": "object",
-          "$ref": "#/components/schemas/Home"
-        },
-        "office": {
-          "type": "object",
-          "$ref": "#/components/schemas/Office"
         }
       }
     },
-    "Login": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "require": true
-        },
-        "password": {
-          "type": "string",
-          "require": true
+    "/office": {
+      "get": {
+        "tags": [
+          "office"
+        ],
+        "summary": "GET all offices",
+        "description": "This endpoint display office list",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Office": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.109421,
+                          43.585147
+                        ]
+                      },
+                      "image": [],
+                      "_id": "5e986e2b92ea60ef4e43e8ae",
+                      "street": "string",
+                      "city": "string",
+                      "postCode": 0,
+                      "country": "string",
+                      "building_use": "string",
+                      "title": "string",
+                      "description": "string",
+                      "price": 0,
+                      "buyRent": true,
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
         }
       }
     },
-    "Home": {
-      "type": "object",
-      "properties": {
+    "/office/{id}": {
+      "get": {
+        "tags": [
+          "office"
+        ],
+        "summary": "GET office by Id",
+        "description": "This endpoint display office by ID",
+        "parameters": [
 
-        "street": {
-          "type": "string",
-          "required": true
-        },
-        "city": {
-          "type": "string",
-          "required": true
-        },
-        "postCode": {
-          "type": "number",
-          "required": true
-        },
-        "country": {
-          "type": "string",
-          "required": true
-        },
-        "location": {
-           "type": {
-             "type": "string",
-             "enum": "number"
-           },
-           "coordinates": {
-             "type": "number",
-             "index": "2dsphere"
-           },
-           "readOnly": true
-        },
-        "type": {
-          "type": "string",
-          "required": true
-        },
-        "condition": {
-          "type": "string",
-          "required": true
-        },
-        "equipment": {
-          "type": "string",
-          "required": true
-        },
-        "bathrooms": {
-          "type": "number",
-          "required": true
-        },
-        "bedrooms": {
-          "type": "number",
-          "required": true
-        },
-        "title": {
-          "type": "string",
-          "required": true
-        },
-        "description": {
-          "type": "string",
-          "required": true
-        },
-        "price": {
-          "type": "number",
-          "required": true
-        },
-        "image": {
-          "type": "array",
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Write Id of office",
+            "required": true,
+            "type": "string"
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Office": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.109421,
+                          43.585147
+                        ]
+                      },
+                      "image": [],
+                      "_id": "5e986e2b92ea60ef4e43e8ae",
+                      "street": "string",
+                      "city": "string",
+                      "postCode": 0,
+                      "country": "string",
+                      "building_use": "string",
+                      "title": "string",
+                      "description": "string",
+                      "price": 0,
+                      "buyRent": true,
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/office/{buyRent}/{city}": {
+      "get": {
+        "tags": [
+          "office"
+        ],
+        "summary": "GET all offices by filter of type property for sell or rent and filter the city",
+        "description": "This endpoint display office by filter buyRent and city",
+        "parameters": [
+
+          {
+            "name": "buyRent",
+            "in": "path",
+            "description": "Write type boolean of property. True for sell, false for rent",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "path",
+            "description": "Write name of the city",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Office": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.109421,
+                          43.585147
+                        ]
+                      },
+                      "image": [],
+                      "_id": "5e986e2b92ea60ef4e43e8ae",
+                      "street": "string",
+                      "city": "string",
+                      "postCode": 0,
+                      "country": "string",
+                      "building_use": "string",
+                      "title": "string",
+                      "description": "string",
+                      "price": 0,
+                      "buyRent": true,
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/office/{buyRent}/{city}/{date}/byDate": {
+      "get": {
+        "tags": [
+          "office"
+        ],
+        "summary": "GET all offices by date",
+        "description": "This endpoint display office by date",
+        "parameters": [
+
+          {
+            "name": "buyRent",
+            "in": "path",
+            "description": "Write type boolean of property. True for sell, false for rent",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "path",
+            "description": "Write name of the city",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Office": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.109421,
+                          43.585147
+                        ]
+                      },
+                      "image": [],
+                      "_id": "5e986e2b92ea60ef4e43e8ae",
+                      "street": "string",
+                      "city": "string",
+                      "postCode": 0,
+                      "country": "string",
+                      "building_use": "string",
+                      "title": "string",
+                      "description": "string",
+                      "price": 0,
+                      "buyRent": true,
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/office/{buyRent}/{city}/{from}/{to}": {
+      "get": {
+        "tags": [
+          "office"
+        ],
+        "summary": "GET all offices by filter price",
+        "description": "This endpoint display office by filter price from to",
+        "parameters": [{
+            "name": "buyRent",
+            "in": "path",
+            "description": "this is the unique name of buyRent type boolean",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "path",
+            "description": "this is the unique name of city",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "path",
+            "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "to",
+            "in": "path",
+            "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Office": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.109421,
+                          43.585147
+                        ]
+                      },
+                      "image": [],
+                      "_id": "5e986e2b92ea60ef4e43e8ae",
+                      "street": "string",
+                      "city": "string",
+                      "postCode": 0,
+                      "country": "string",
+                      "building_use": "string",
+                      "title": "string",
+                      "description": "string",
+                      "price": 0,
+                      "buyRent": true,
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/office/buyRent/city/{building_use}/{from}/{to}/{date}": {
+      "get": {
+        "tags": [
+          "office"
+        ],
+        "summary": "GET offices by all parameters",
+        "description": "This endpoint display office by parameters",
+        "parameters": [
+
+          {
+            "name": "building_use",
+            "in": "path",
+            "description": "this is the unique name of building_use",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "path",
+            "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "to",
+            "in": "path",
+            "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Office": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          -111.109421,
+                          43.585147
+                        ]
+                      },
+                      "image": [],
+                      "_id": "5e986e2b92ea60ef4e43e8ae",
+                      "street": "string",
+                      "city": "string",
+                      "postCode": 0,
+                      "country": "string",
+                      "building_use": "string",
+                      "title": "string",
+                      "description": "string",
+                      "price": 0,
+                      "buyRent": true,
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/home": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "summary": "GET all houses",
+        "description": "This endpoint display house list",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Home"
+
+                },
+                "examples": {
+                  "Home": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          1.725524,
+                          41.219515
+                        ]
+                      },
+                      "image": [
+                        "5e8fc54ebb791d3de054ac28"
+
+                      ],
+                      "_id": "5e8fc529bb791d3de054ac27",
+                      "street": "Carrer del Parlament 16",
+                      "city": "Barcelona",
+                      "postCode": 8015,
+                      "country": "Spain",
+                      "title": "home user ",
+                      "price": 250,
+                      "description": "home user test ",
+                      "type": "Penthouses",
+                      "bedrooms": 1,
+                      "bathrooms": 2,
+                      "equipment": "Indifferent",
+                      "condition": "New homes",
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "buyRent": false,
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/home/{home_id}": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "summary": "GET house by ID",
+        "description": "This endpoint display house by ID",
+        "parameters": [{
+          "name": "home_id",
+          "in": "path",
+          "description": "Write home id to get house by Id",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Home"
+
+                },
+                "examples": {
+                  "Home": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          1.725524,
+                          41.219515
+                        ]
+                      },
+                      "image": [
+                        "5e8fc54ebb791d3de054ac28"
+
+                      ],
+                      "_id": "5e8fc529bb791d3de054ac27",
+                      "street": "Carrer del Parlament 16",
+                      "city": "Barcelona",
+                      "postCode": 8015,
+                      "country": "Spain",
+                      "title": "home user ",
+                      "price": 250,
+                      "description": "home user test ",
+                      "type": "Penthouses",
+                      "bedrooms": 1,
+                      "bathrooms": 2,
+                      "equipment": "Indifferent",
+                      "condition": "New homes",
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "buyRent": false,
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/home/{buyRent}/{city}": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "summary": "GET all offices by date",
+        "description": "This endpoint display office by date",
+        "parameters": [
+
+          {
+            "name": "buyRent",
+            "in": "path",
+            "description": "Write type boolean of property. True for sell, false for rent",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "path",
+            "description": "Write name of the city",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Home": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          1.725524,
+                          41.219515
+                        ]
+                      },
+                      "image": [
+                        "5e8fc54ebb791d3de054ac28"
+                      ],
+                      "_id": "5e8fc529bb791d3de054ac27",
+                      "street": "Carrer del Parlament 16",
+                      "city": "Barcelona",
+                      "postCode": 8015,
+                      "country": "Spain",
+                      "title": "home user ",
+                      "price": 250,
+                      "description": "home user test ",
+                      "type": "Penthouses",
+                      "bedrooms": 1,
+                      "bathrooms": 2,
+                      "equipment": "Indifferent",
+                      "condition": "New homes",
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "buyRent": false,
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/home/buyRent/city/{date}/byDate": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "summary": "GET all homes by date",
+        "description": "This endpoint display home by date",
+        "parameters": [
+
+          {
+            "name": "date",
+            "in": "path",
+            "description": "Number of date. Example: 24 - display homes from yesterday, 31 - display homes from one month, 7 - display homes from last week ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Home": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          1.725524,
+                          41.219515
+                        ]
+                      },
+                      "image": [
+                        "5e8fc54ebb791d3de054ac28"
+                      ],
+                      "_id": "5e8fc529bb791d3de054ac27",
+                      "street": "Carrer del Parlament 16",
+                      "city": "Barcelona",
+                      "postCode": 8015,
+                      "country": "Spain",
+                      "title": "home user ",
+                      "price": 250,
+                      "description": "home user test ",
+                      "type": "Penthouses",
+                      "bedrooms": 1,
+                      "bathrooms": 2,
+                      "equipment": "Indifferent",
+                      "condition": "New homes",
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "buyRent": false,
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/home/buyRent/city/{from}/{to}": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "summary": "GET all offices by filter price",
+        "description": "This endpoint display office by filter price from to",
+        "parameters": [
+
+          {
+            "name": "from",
+            "in": "path",
+            "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "to",
+            "in": "path",
+            "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Home": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          1.725524,
+                          41.219515
+                        ]
+                      },
+                      "image": [
+                        "5e8fc54ebb791d3de054ac28"
+                      ],
+                      "_id": "5e8fc529bb791d3de054ac27",
+                      "street": "Carrer del Parlament 16",
+                      "city": "Barcelona",
+                      "postCode": 8015,
+                      "country": "Spain",
+                      "title": "home user ",
+                      "price": 250,
+                      "description": "home user test ",
+                      "type": "Penthouses",
+                      "bedrooms": 1,
+                      "bathrooms": 2,
+                      "equipment": "Indifferent",
+                      "condition": "New homes",
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "buyRent": false,
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/home/buyRent/city/{type}/{beds}/{baths}/{equipment}/{condition}/{from}/{to}/{date}": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "summary": "GET offices by all parameters",
+        "description": "This endpoint display office by parameters",
+        "parameters": [{
+            "name": "condition",
+            "in": "path",
+            "description": "this is the unique name of value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "equipment",
+            "in": "path",
+            "description": "this is the unique name of value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "baths",
+            "in": "path",
+            "description": "this is the unique name of value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "beds",
+            "in": "path",
+            "description": "this is the unique name of value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "description": "this is the unique name of building_use",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "path",
+            "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "to",
+            "in": "path",
+            "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Office"
+
+                },
+                "examples": {
+                  "Home": {
+                    "value": {
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          1.725524,
+                          41.219515
+                        ]
+                      },
+                      "image": [
+                        "5e8fc54ebb791d3de054ac28"
+                      ],
+                      "_id": "5e8fc529bb791d3de054ac27",
+                      "street": "Carrer del Parlament 16",
+                      "city": "Barcelona",
+                      "postCode": 8015,
+                      "country": "Spain",
+                      "title": "home user ",
+                      "price": 250,
+                      "description": "home user test ",
+                      "type": "Penthouses",
+                      "bedrooms": 1,
+                      "bathrooms": 2,
+                      "equipment": "Indifferent",
+                      "condition": "New homes",
+                      "date": "2020-04-06T06:01:17.171Z",
+                      "buyRent": false,
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {}
+          }
+        }
+      }
+    }
+
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+
+          "name": {
+            "type": "string",
+            "unique": true,
+            "require": true
+          },
+          "email": {
+            "type": "string",
+            "unique": true,
+            "require": true
+          },
+          "password": {
+            "type": "string",
+            "require": true
+          },
+          "home": {
+            "type": "object",
+            "$ref": "#/components/schemas/Home"
+          },
+          "office": {
+            "type": "object",
+            "$ref": "#/components/schemas/Office"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "require": true
+          },
+          "password": {
+            "type": "string",
+            "require": true
+          }
+        }
+      },
+      "Home": {
+        "type": "object",
+        "properties": {
+
+          "street": {
+            "type": "string",
+            "required": true
+          },
+          "city": {
+            "type": "string",
+            "required": true
+          },
+          "postCode": {
+            "type": "number",
+            "required": true
+          },
+          "country": {
+            "type": "string",
+            "required": true
+          },
+          "location": {
+            "type": {
+              "type": "string",
+              "enum": "number"
+            },
+            "coordinates": {
+              "type": "number",
+              "index": "2dsphere"
+            },
             "readOnly": true
-        },
-        "buyRent": {
-          "type": "boolean",
-          "required": true
-        },
-        "date": {
-          "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "required": true
+          },
+          "condition": {
+            "type": "string",
+            "required": true
+          },
+          "equipment": {
+            "type": "string",
+            "required": true
+          },
+          "bathrooms": {
+            "type": "number",
+            "required": true
+          },
+          "bedrooms": {
+            "type": "number",
+            "required": true
+          },
+          "title": {
+            "type": "string",
+            "required": true
+          },
+          "description": {
+            "type": "string",
+            "required": true
+          },
+          "price": {
+            "type": "number",
+            "required": true
+          },
+          "image": {
+            "type": "array",
+            "readOnly": true
+          },
+          "buyRent": {
+            "type": "boolean",
+            "required": true
+          },
+          "date": {
+            "type": "string"
+          }
         }
-      }
-    },
-    "Office": {
-      "type": "object",
-      "properties": {
-        "street": {
-          "type": "string",
-          "required": true
-        },
-        "city": {
-          "type": "string",
-          "required": true
-        },
-        "postCode": {
-          "type": "number",
-          "required": true
-        },
-        "country": {
-          "type": "string",
-          "required": true
-        },
-        "location": {
-           "type": {
-             "type": "string",
-             "enum": "number"
-           },
-           "coordinates": {
-             "type": "number",
-             "index": "2dsphere"
-           },
-           "readOnly": true
-        },
-        "building_use": {
-          "type": "string",
-          "required": true
-        },
-        "title": {
-          "type": "string",
-          "required": true
-        },
-        "description": {
-          "type": "string",
-          "required": true
-        },
-        "price": {
-          "type": "number",
-          "required": true
-        },
-        "image": {
-          "type": "array",
-           "readOnly": true
-        },
-        "buyRent": {
-          "type": "boolean",
-          "required": true
-        },
-        "date": {
-          "type": "string"
+      },
+      "Office": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "required": true
+          },
+          "city": {
+            "type": "string",
+            "required": true
+          },
+          "postCode": {
+            "type": "number",
+            "required": true
+          },
+          "country": {
+            "type": "string",
+            "required": true
+          },
+          "location": {
+            "type": {
+              "type": "string",
+              "enum": "number"
+            },
+            "coordinates": {
+              "type": "number",
+              "index": "2dsphere"
+            },
+            "readOnly": true
+          },
+          "building_use": {
+            "type": "string",
+            "required": true
+          },
+          "title": {
+            "type": "string",
+            "required": true
+          },
+          "description": {
+            "type": "string",
+            "required": true
+          },
+          "price": {
+            "type": "number",
+            "required": true
+          },
+          "image": {
+            "type": "array",
+            "readOnly": true
+          },
+          "buyRent": {
+            "type": "boolean",
+            "required": true
+          },
+          "date": {
+            "type": "string"
+          }
         }
-    }
-   },
-   "image": {
-    "type" : "string",
-    "items" : {
-      "format" : "binary"
-    }
+      },
+      "image": {
+        "type": "string",
+        "items": {
+          "format": "binary"
+        }
 
-   },
-   "ApiResponse": {
-    "type": "object",
-    "properties": {
-      "code": {
-        "type": "integer",
-        "format": "int32"
       },
-      "type": {
-        "type": "string"
-      },
-      "message": {
-        "type": "string"
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
       }
     }
   }
-  }
- }
 }
-

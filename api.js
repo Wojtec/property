@@ -23,9 +23,6 @@ const swagger = require('swagger-ui-express');
 //import open Api documentation
 const openApi = require('./openapi/openApi');
 
-app.use('/open',swagger.serve, swagger.setup(openApi));
-
-
 // configure bodyparser to handle post request
 app.use(bodyParser.urlencoded({
   extended: true
@@ -47,7 +44,8 @@ if(!db){
   console.log("Connected successfully to server");
 }
 
-
+//swagger route
+app.use('/open',swagger.serve, swagger.setup(openApi));
 //route for user
 app.use('/user',userRoutes);
 //route for home table

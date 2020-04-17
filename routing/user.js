@@ -19,15 +19,18 @@ router.route('/login')
 router.route('/:id')
 .get(userController.getOneUser)
 //post home to user by id 
-router.route('/:id/home')
-.post(userController.userCollectionHouse);
+router.route('/home')
+.post(verifyToken,userController.userCollectionHouse);
+//delete home by id
+router.route('/home/:home_id')
+.delete(verifyToken,userController.delete);
 //post image to home by id
 router.route('/home/:home_id/image')
 .post(upload.single('image'), userController.addImageHouse)
 .get(userController.getImage);
 //post office to user by id
-router.route('/:id/office')
-.post(userController.userCollectionOffice);
+router.route('/office')
+.post(verifyToken,userController.userCollectionOffice);
 //post image to office by id
 router.route('/office/:office_id/image')
 .post(upload.single('image'), userController.addImageOffice)
