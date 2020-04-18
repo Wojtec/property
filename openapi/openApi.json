@@ -944,8 +944,8 @@
         "tags": [
           "home"
         ],
-        "summary": "GET all offices by date",
-        "description": "This endpoint display office by date",
+        "summary": "GET all Homes by buyRent and City",
+        "description": "This endpoint display home by buyRent and City",
         "parameters": [
 
           {
@@ -970,7 +970,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "$ref": "#/components/schemas/Office"
+                  "$ref": "#/components/schemas/Home"
 
                 },
                 "examples": {
@@ -1039,7 +1039,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "$ref": "#/components/schemas/Office"
+                  "$ref": "#/components/schemas/Home"
 
                 },
                 "examples": {
@@ -1089,21 +1089,21 @@
         "tags": [
           "home"
         ],
-        "summary": "GET all offices by filter price",
-        "description": "This endpoint display office by filter price from to",
+        "summary": "GET all homes by filter price",
+        "description": "This endpoint display home by filter price from to",
         "parameters": [
 
           {
             "name": "from",
             "in": "path",
-            "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
+            "description": "Number of form display price from - to. example: 400-700 will be all homes with this price. ",
             "required": true,
             "type": "number"
           },
           {
             "name": "to",
             "in": "path",
-            "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
+            "description": "Number of to display price from - to. example: 400-700 will be all homes with this price. ",
             "required": true,
             "type": "number"
           }
@@ -1115,7 +1115,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "$ref": "#/components/schemas/Office"
+                  "$ref": "#/components/schemas/Home"
 
                 },
                 "examples": {
@@ -1165,61 +1165,61 @@
         "tags": [
           "home"
         ],
-        "summary": "GET offices by all parameters",
-        "description": "This endpoint display office by parameters",
+        "summary": "GET homes by all parameters",
+        "description": "This endpoint display home by parameters",
         "parameters": [{
             "name": "condition",
             "in": "path",
-            "description": "this is the unique name of value",
+            "description": "this is the unique name of condition",
             "required": true,
             "type": "string"
           },
           {
             "name": "equipment",
             "in": "path",
-            "description": "this is the unique name of value",
+            "description": "this is the unique name of equipment",
             "required": true,
             "type": "string"
           },
           {
             "name": "baths",
             "in": "path",
-            "description": "this is the unique name of value",
+            "description": "this is the unique name of baths",
             "required": true,
             "type": "string"
           },
           {
             "name": "beds",
             "in": "path",
-            "description": "this is the unique name of value",
+            "description": "this is the unique name of beds",
             "required": true,
             "type": "string"
           },
           {
             "name": "type",
             "in": "path",
-            "description": "this is the unique name of building_use",
+            "description": "this is the unique name of type",
             "required": true,
             "type": "string"
           },
           {
             "name": "date",
             "in": "path",
-            "description": "Number of date. Example: 24 - display offices from yesterday, 31 - display offices from one month, 7 - display offices from last week ",
+            "description": "Number of date. Example: 24 - display homes from yesterday, 31 - display homes from one month, 7 - display homes from last week ",
             "required": true,
             "type": "string"
           },
           {
             "name": "from",
             "in": "path",
-            "description": "Number of form display price from - to. example: 400-700 will be all offices with this price. ",
+            "description": "Number of form display price from - to. example: 400-700 will be all homes with this price. ",
             "required": true,
             "type": "number"
           },
           {
             "name": "to",
             "in": "path",
-            "description": "Number of to display price from - to. example: 400-700 will be all offices with this price. ",
+            "description": "Number of to display price from - to. example: 400-700 will be all homes with this price. ",
             "required": true,
             "type": "number"
           }
@@ -1231,7 +1231,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "$ref": "#/components/schemas/Office"
+                  "$ref": "#/components/schemas/Home"
 
                 },
                 "examples": {
