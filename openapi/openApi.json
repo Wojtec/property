@@ -1297,14 +1297,6 @@
           "password": {
             "type": "string",
             "require": true
-          },
-          "home": {
-            "type": "object",
-            "$ref": "#/components/schemas/Home"
-          },
-          "office": {
-            "type": "object",
-            "$ref": "#/components/schemas/Office"
           }
         }
       },
