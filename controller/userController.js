@@ -96,7 +96,8 @@ getUserList:(req,res)=>{
         if(err){
             res.json(err);
         }
-        res.json({
+        
+        res.header("Access-Control-Allow-Origin", "*").json({
             status: 'Success',
             message: 'Users list',
             data: user
