@@ -142,17 +142,14 @@ userCollectionHouse:(req,res)=>{
 house.save(house)
 // update user home after save
 .then(function(dbHome){
-  return  UserModel.findByIdAndUpdate(
+        UserModel.findByIdAndUpdate(
         {_id: req.userId},
         {$push:{home: dbHome._id}},
         {new: true});
-})
-//display user after update
-.then(function(userModel){
-    res.status(200).header("Access-Control-Allow-Origin", "*").json({
-        message: 'Update success',
-        data: userModel
-    })
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
+            message: 'Update success',
+            data: dbHome
+        })
 })
 .catch(function(err){
     res.json(err);
