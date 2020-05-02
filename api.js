@@ -34,35 +34,16 @@ mongoose.connect(dbUrl.url,{
    useNewUrlParser: true,
    useUnifiedTopology: true,
    useFindAndModify: false,
-   useCreateIndex: true
-  }, function(error, db) {
-    db.addListener("error", function(error){
-      console.log("Error connecting to MongoLab");
+   useCreateIndex: true,
+   family: 4
   });
-  db.createCollection('requests', function(err, collection){
-    db.collection('requests', function(err, collection){
-      var requestCollection = collection;
-      connect(
-        connect.favicon(),                    // Return generic favicon
-        connect.query(),                      // populate req.query with query parameters
-        connect.bodyParser(),                 // Get JSON data from body
-        function(req, res, next){             // Handle the request
-          res.setHeader("Content-Type", "application/json");
-          if(req.query != null) {
-            requestCollection.insert(req.query, function(error, result){
-              // result will have the object written to the db so let's just
-              // write it back out to the browser
-              res.write(JSON.stringify(result));
-            });
-          }
-          
-          res.end();
-        }
-      ).listen(process.env.PORT || 3000);
-      // the PORT variable will be assigned by Heroku
-    });
-  });
-});
+let db = mongoose.connection;
+// check if db is connected
+if(!db){
+  console.log("Error connection to database");
+}else{
+  console.log("Connected successfully to server");
+}
 
 //swagger route
 app.use('/open',swagger.serve, swagger.setup(openApi));
@@ -75,6 +56,8 @@ app.use('/office',officeRoutes);
 //route for home table
 app.use('/',homeRoutes);
 
+// run app to listen to specified port
+app.listen(port,()=> console.log(`Server running on port:${port}`));
 
 
 
