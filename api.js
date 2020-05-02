@@ -58,11 +58,9 @@ app.use('/',homeRoutes);
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));
 
-console.log(process.env);
 
 
 
-console.log(dbUrl);
 
 
 

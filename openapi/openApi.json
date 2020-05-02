@@ -1382,9 +1382,6 @@
           "buyRent": {
             "type": "boolean",
             "required": true
-          },
-          "date": {
-            "type": "string"
           }
         }
       },
@@ -1441,9 +1438,6 @@
           "buyRent": {
             "type": "boolean",
             "required": true
-          },
-          "date": {
-            "type": "string"
           }
         }
       },

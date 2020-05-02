@@ -66,7 +66,7 @@ UserModel.findById(decoded.id,{password: 0},(err,user)=>{
 })
 
 },
-//Register add new users
+//Register new users
 new:(req,res)=>{
 let hashPassword = bcrypt.hashSync(req.body.password);
 let user = new UserModel();
@@ -74,11 +74,10 @@ user.name = req.body.name,
 user.email = req.body.email,
 user.password = hashPassword
 //save new user
-user.save((err,user)=>{
-    if(err){
-        res.json(err);
-    }
+user.save(user)
+
 //create token
+.then((user)=>{
     let token = jwt.sign({id: user._id}, config.secret,{
         expiresIn:86400 // expires in 24 hours
     });
@@ -86,9 +85,14 @@ user.save((err,user)=>{
         auth:true,
         token:token,
         message: 'New user created'
-
     });
-});
+
+})
+.catch(function(err){
+    res.json(err);
+})
+
+
 },
 //get users list
 getUserList:(req,res)=>{
@@ -120,7 +124,7 @@ getOneUser: (req,res)=>{
 //HOUSE
 // add new house by user id
 userCollectionHouse:(req,res)=>{
-
+console.log(req.body);
 // save new house
 HomeModel.create(req.body)
 // update user home after save
