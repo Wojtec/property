@@ -126,7 +126,7 @@ getOneUser: (req,res)=>{
 userCollectionHouse:(req,res)=>{
 console.log(req.body);
 // save new house
-HomeModel.create(req.body)
+HomeModel.save(req.body)
 // update user home after save
 .then(function(dbHome){
   return  UserModel.findByIdAndUpdate(
