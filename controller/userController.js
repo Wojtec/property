@@ -124,8 +124,22 @@ getOneUser: (req,res)=>{
 //HOUSE
 // add new house by user id
 userCollectionHouse:(req,res)=>{
+    const house = new HomeModel();
+    house.title = req.body.title;
+    house.price = req.body.price;
+    house.description = req.body.description;
+    house.type = req.body.type;
+    house.bedrooms = req.body.bedrooms;
+    house.bathrooms = req.body.bathrooms;
+    house.equipment = req.body.equipment;
+    house.condition = req.body.condition;
+    house.street = req.body.street;
+    house.city = req.body.city;
+    house.postCode = req.body.postCode;
+    house.country = req.body.country;
+    house.buyRent = req.body.buyRent;
 // save new house
-HomeModel.save(req.body)
+house.save(house)
 // update user home after save
 .then(function(dbHome){
   return  UserModel.findByIdAndUpdate(
