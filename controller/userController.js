@@ -28,7 +28,7 @@ UserModel.findOne({email: req.body.email},(err,user)=>{
     let token = jwt.sign({id: user._id}, config.secret,{
         expiresIn: 86400 // expires in 24 hours
     });
-    res.status(200).json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         auth: true,
         token: token
     })
@@ -57,7 +57,7 @@ UserModel.findById(decoded.id,{password: 0},(err,user)=>{
     if(!user){
         res.status(404).send("No user found.");
     }
-    res.status(200).json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message: "User found",
         data: user
     });
@@ -82,7 +82,7 @@ user.save((err,user)=>{
     let token = jwt.sign({id: user._id}, config.secret,{
         expiresIn:86400 // expires in 24 hours
     });
-    res.json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         auth:true,
         token:token,
         message: 'New user created'
@@ -97,7 +97,7 @@ getUserList:(req,res)=>{
             res.json(err);
         }
         
-        res.header("Access-Control-Allow-Origin", "*").json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
             status: 'Success',
             message: 'Users list',
             data: user
@@ -111,7 +111,7 @@ getOneUser: (req,res)=>{
         if(err){
             res.json(err);
         }
-        res.json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
             message: 'User lading',
             data: user
         })
@@ -132,7 +132,7 @@ HomeModel.create(req.body)
 })
 //display user after update
 .then(function(userModel){
-    res.json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message: 'Update success',
         data: userModel
     })
@@ -148,7 +148,7 @@ delete: (req,res)=>{
     },(err)=>{
         if(err)
             res.send(err);
-        res.json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
             status:'Success',
             message: 'Home deleted'
         })
@@ -170,7 +170,7 @@ addImageOffice: (req, res)=>{
         );
     })
     .then((officeModel)=>{
-        res.json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
             message: 'Update image success',
             data: officeModel
         })
@@ -194,7 +194,7 @@ addImageHouse: (req, res)=>{
         );
     })
     .then((homeModel)=>{
-        res.json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
             message: 'Update image success',
             data: homeModel
         })
@@ -209,7 +209,7 @@ getImage:(req,res)=>{
         if(err){
             res.json(err);
         }
-        res.json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
              message: 'image loaded',
              data: image
         })
@@ -230,7 +230,7 @@ OfficeModel.create(req.body)
 })
 //display user with id after update office
 .then((userModel)=>{
-    res.json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message: 'Update office success',
         data: userModel
     })

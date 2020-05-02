@@ -10,7 +10,7 @@ module.exports = {
                message: err,
            });   
        }
-       res.json({
+       res.status(200).header("Access-Control-Allow-Origin", "*").json({
            status: "Success",
            message: "Houses list",
            data: home
@@ -40,7 +40,7 @@ module.exports = {
        if(err){
            res.json(err);
        }
-       res.json({
+       res.status(200).header("Access-Control-Allow-Origin", "*").json({
            message:'New House add +++',
            data: house
        });
@@ -52,7 +52,7 @@ module.exports = {
        if(err){
            res.json(err);
        }
-       res.json({
+       res.status(200).header("Access-Control-Allow-Origin", "*").json({
            message: "Home loading",
            data: home
 
@@ -67,7 +67,7 @@ module.exports = {
    },(err)=>{
        if(err)
            res.send(err);
-       res.json({
+       res.status(200).header("Access-Control-Allow-Origin", "*").json({
            status:'Success',
            message: 'Home deleted'
        })
@@ -83,7 +83,7 @@ filterBuyRentCity: (req,res)=>{
             res.status(500).json(err)
 
         }
-        res.json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
             message: "Homes filter by buyRent and City",
             data: home
             
@@ -116,7 +116,7 @@ filterBuyRentCity: (req,res)=>{
        if(err){
            res.json(err);
        }
-       res.json({
+       res.status(200).header("Access-Control-Allow-Origin", "*").json({
            message:"Homes by parameters loading",
            data:home
        })
@@ -141,7 +141,7 @@ findByDate: (req,res)=>{
         if(err){
             res.status(500).json(err);
         }
-        res.json({
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
             message: "Houses by date loaded",
             data: office
         })
@@ -157,7 +157,7 @@ findByDate: (req,res)=>{
            if(err){
                res.json(err);
            }
-           res.json({
+           res.status(200).header("Access-Control-Allow-Origin", "*").json({
                message: "Homes filter by price From <> TO",
                data:home
            })

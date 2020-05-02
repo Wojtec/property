@@ -9,7 +9,7 @@ module.exports = {
                message: err,
            });   
        }
-       res.json({
+       res.status(200).header("Access-Control-Allow-Origin", "*").json({
            status: "succes",
            message: "Office list",
            data: office
@@ -36,7 +36,7 @@ module.exports = {
         if(err){
             res.status(500).json(err);
         }
-    res.json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message: 'New Office add ++',
         data: local
          });
@@ -48,7 +48,7 @@ module.exports = {
             if(err){
                 res.status(500).json(err);
             }
-            res.json({
+            res.status(200).header("Access-Control-Allow-Origin", "*").json({
                 message: 'Office loading...',
                 data: office
             })
@@ -61,7 +61,7 @@ module.exports = {
             if(err)
                 res.status(500).send(err);
             
-            res.json({
+            res.status(200).header("Access-Control-Allow-Origin", "*").json({
                 status:'Success',
                 message: 'Office delete'
             })
@@ -78,7 +78,7 @@ module.exports = {
             if(err){
                 res.status(500).json(err);
             }
-            res.json({
+            res.status(200).header("Access-Control-Allow-Origin", "*").json({
                 message: "Offices by price loading",
                 data: office
             })
@@ -95,7 +95,7 @@ module.exports = {
     if(err){
         res.status(500).json(err);
     }
-    res.json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message: "Offices filter by price",
         data: office
     })
@@ -113,7 +113,7 @@ module.exports = {
                 res.status(500).json(err)
 
             }
-            res.json({
+            res.status(200).header("Access-Control-Allow-Origin", "*").json({
                 message: "Office filter by buyRent and City",
                 data: office
                 
@@ -142,7 +142,7 @@ module.exports = {
     if(err){
         res.json(err);
     }
-    res.json({
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message:"Offices by all parameters loading",
         data: office
     })
@@ -168,7 +168,7 @@ module.exports = {
             if(err){
                 res.status(500).json(err);
             }
-            res.json({
+            res.status(200).header("Access-Control-Allow-Origin", "*").json({
                 message: "offices by date loaded",
                 data: office
             })
