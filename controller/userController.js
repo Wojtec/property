@@ -195,7 +195,6 @@ addImageOffice: (req, res)=>{
 },
 //add new image by house id 
 addImageHouse: (req, res)=>{
-    console.log(req);
     let img = new ImageModel;
     img.image.data = fs.readFileSync(req.file.path);
     img.image.contentType = req.file.mimetype;
@@ -223,6 +222,7 @@ getImage:(req,res)=>{
         if(err){
             res.json(err);
         }
+        console.log(image);
         res.status(200).header("Access-Control-Allow-Origin", "*").json({
              message: 'image loaded',
              data: image
