@@ -20,11 +20,11 @@ let userSchema = mongoose.Schema({
     },
     home:{
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'home'
+        ref: 'Home'
     },
     office:{
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'office'
+        ref: 'Office'
     }
 
 })

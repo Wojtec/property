@@ -139,17 +139,21 @@ userCollectionHouse:(req,res)=>{
     house.country = req.body.country;
     house.buyRent = req.body.buyRent;
 // save new house
-house.save(house)
+HomeModel.create(house)
 // update user home after save
-.then(function(dbHome){
-        UserModel.findByIdAndUpdate(
+.then((dbHome)=>{
+       return UserModel.findByIdAndUpdate(
         {_id: req.userId},
-        {$push:{home: dbHome._id}},
+        {$push: {home: dbHome._id}},
         {new: true});
-        res.status(200).header("Access-Control-Allow-Origin", "*").json({
-            message: 'New house add. Success!',
-            data: dbHome
-        })
+       
+})
+.then((dbHome)=>{
+
+    res.status(200).header("Access-Control-Allow-Origin", "*").json({
+        message: 'New house add. Success!',
+        data: dbHome
+    })
 })
 .catch(function(err){
     res.json(err);
@@ -200,8 +204,7 @@ addImageHouse: (req, res)=>{
     img.image.contentType = req.file.mimetype;
     ImageModel.create(img)
     .then((image)=>{
-        console.log(image);
-        return HomeModel.findByIdAndUpdate(
+            return HomeModel.findByIdAndUpdate(
             {_id: req.params.home_id},
             {$push: {image: image}},
             {new: true}
