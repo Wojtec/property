@@ -199,22 +199,23 @@ addImageHouse: (req, res)=>{
     img.image.data = fs.readFileSync(req.file.path);
     img.image.contentType = req.file.mimetype;
     ImageModel.create(img)
-    .then((dbImage)=>{
+    .then((image)=>{
+        console.log(image);
         return HomeModel.findByIdAndUpdate(
             {_id: req.params.home_id},
-            {$push: {image: dbImage._id}},
+            {$push: {image: image}},
             {new: true}
-        );
+         );
     })
-    .then((homeModel)=>{
-        res.status(200).header("Access-Control-Allow-Origin", "*").json({
-            message: 'Update image success',
-            data: homeModel
-        })
-    })
-    .catch((err)=>{
-        res.json(err);
-    })
+     .then((homeModel)=>{
+         res.status(200).header("Access-Control-Allow-Origin", "*").json({
+             message: 'Update image success',
+             data: homeModel
+         })
+     })
+    // .catch((err)=>{
+    //     res.json(err);
+    // })
 },
 // get image 
 getImage:(req,res)=>{
