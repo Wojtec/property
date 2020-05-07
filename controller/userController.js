@@ -147,7 +147,7 @@ house.save(house)
         {$push:{home: dbHome._id}},
         {new: true});
         res.status(200).header("Access-Control-Allow-Origin", "*").json({
-            message: 'Update success',
+            message: 'New house add. Success!',
             data: dbHome
         })
 })
