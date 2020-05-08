@@ -10,7 +10,6 @@ const bcrypt = require('bcryptjs');
 module.exports = {
 //Login user
 login: (req,res)=>{
-    console.log(req.body);
 UserModel.findOne({email: req.body.email},(err,user)=>{
     if(err){
         return res.status(500).send("Error on the server");
@@ -110,7 +109,6 @@ getUserList:(req,res)=>{
 },
 // get one user
 getOneUser: (req,res)=>{
-    console.log(req)
     UserModel.findById(req.params.id,(err,user)=>{
         if(err){
             res.json(err);
@@ -175,7 +173,6 @@ delete: (req,res)=>{
 //Image
 //add new image by office id 
 addImageOffice: (req, res)=>{
-    console.log(req);
     let img = new ImageModel;
     img.image.data = fs.readFileSync(req.file.path);
     img.image.contentType = req.file.mimetype;
@@ -199,11 +196,12 @@ addImageOffice: (req, res)=>{
 },
 //add new image by house id 
 addImageHouse: (req, res)=>{
+    console.log(req.file);
     let img = new ImageModel;
-    img.image.data = fs.readFileSync(req.file.path);
-    img.image.contentType = req.file.mimetype;
-    ImageModel.create(img)
+        img.image = req.file.path;
+    img.save(img)
     .then((image)=>{
+        console.log(image);
             return HomeModel.findByIdAndUpdate(
             {_id: req.params.home_id},
             {$push: {image: image}},
@@ -216,9 +214,9 @@ addImageHouse: (req, res)=>{
              data: homeModel
          })
      })
-    // .catch((err)=>{
-    //     res.json(err);
-    // })
+    .catch((err)=>{
+        res.json(err);
+    })
 },
 // get image 
 getImage:(req,res)=>{

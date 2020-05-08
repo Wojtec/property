@@ -28,7 +28,8 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 app.use(bodyParser.json());
-
+//make public uplad folder
+app.use(express.static('./public/upload'));
 //connection to Mongoose and set connection variable
 mongoose.connect(dbUrl.url,{
    useNewUrlParser: true,
@@ -42,7 +43,7 @@ let db = mongoose.connection;
 if(!db){
   console.log("Error connection to database");
 }else{
-  console.log("Connected successfully to server");
+  console.log("Connected successfully to server MongoDB");
 }
 
 //swagger route
