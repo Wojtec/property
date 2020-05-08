@@ -31,8 +31,8 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json());
 //make public uplad folder
-
-app.use(express.static(__dirname + '/public'));
+process.env.PWD = process.cwd();
+app.use(express.static(path.join(process.env.PWD, 'public')));
 //connection to Mongoose and set connection variable
 mongoose.connect(dbUrl.url,{
    useNewUrlParser: true,
