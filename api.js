@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json());
 //make public uplad folder
-app.use('/img', express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, '/public')));
 console.log(__dirname+ "/public");
 //connection to Mongoose and set connection variable
 mongoose.connect(dbUrl.url,{
