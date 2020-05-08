@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 //make public uplad folder
 
-app.use(express.static(__dirname, '/public'));
+app.use(express.static(__dirname + '/public'));
 //connection to Mongoose and set connection variable
 mongoose.connect(dbUrl.url,{
    useNewUrlParser: true,
