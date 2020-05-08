@@ -3,6 +3,7 @@ const HomeModel = require('../model/homeModel');
 const OfficeModel = require('../model/officeModel');
 const ImageModel = require('../model/imageModel');
 
+const cloudinary = require('cloudinary');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
@@ -196,27 +197,30 @@ addImageOffice: (req, res)=>{
 },
 //add new image by house id 
 addImageHouse: (req, res)=>{
-    console.log(req.file);
-    let img = new ImageModel;
-        img.image = req.file.path;
-    img.save(img)
-    .then((image)=>{
-        console.log(image);
-            return HomeModel.findByIdAndUpdate(
-            {_id: req.params.home_id},
-            {$push: {image: image}},
-            {new: true}
-         );
-    })
-     .then((homeModel)=>{
-         res.status(200).header("Access-Control-Allow-Origin", "*").json({
-             message: 'Update image success',
-             data: homeModel
+    cloudinary.uploader.upload(req.file.path, (result)=>{
+        console.log(req.file);
+        let img = new ImageModel;
+            img.image = result;
+        img.save(img)
+        .then((image)=>{
+            console.log(image);
+                return HomeModel.findByIdAndUpdate(
+                {_id: req.params.home_id},
+                {$push: {image: image}},
+                {new: true}
+             );
+        })
+         .then((homeModel)=>{
+             res.status(200).header("Access-Control-Allow-Origin", "*").json({
+                 message: 'Update image success',
+                 data: homeModel
+             })
          })
-     })
-    .catch((err)=>{
-        res.json(err);
+        .catch((err)=>{
+            res.json(err);
+        })
     })
+   
 },
 // get image 
 getImage:(req,res)=>{
