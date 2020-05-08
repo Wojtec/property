@@ -174,7 +174,7 @@ delete: (req,res)=>{
 //Image
 //add new image by office id 
 addImageOffice: (req, res)=>{
-    let img = new ImageModel;
+    let img = new ImageModel();
     img.image.data = fs.readFileSync(req.file.path);
     img.image.contentType = req.file.mimetype;
     ImageModel.create(img)
@@ -198,9 +198,9 @@ addImageOffice: (req, res)=>{
 //add new image by house id 
 addImageHouse: (req, res)=>{
     cloudinary.uploader.upload(req.file.path, (result)=>{
-        console.log(req.file);
-        let img = new ImageModel;
-            img.image = result;
+        
+        let img = new ImageModel();
+            img.image = result.url;
         img.save(img)
         .then((image)=>{
             console.log(image);
