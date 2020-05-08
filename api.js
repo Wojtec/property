@@ -32,7 +32,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 //make public uplad folder
 
-app.use(express.logger('dev'));
 app.use(express.compress());
 app.use(express.static(path.join(__dirname, '/public')));
 //connection to Mongoose and set connection variable
