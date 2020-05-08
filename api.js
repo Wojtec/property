@@ -4,6 +4,8 @@ require('dotenv').config();
 const express = require('express');
 // initialise app
 const app = express();
+//path
+const path = require('path');
 //setup port
 const port = process.env.PORT || 3000;
 //import bodyparser
