@@ -1,3 +1,4 @@
 module.exports = {
-    url: process.env.DB_CONNECTION
+    url: process.env.MONGODB_URI
+    
 }
