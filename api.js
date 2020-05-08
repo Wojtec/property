@@ -29,7 +29,8 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json());
 //make public uplad folder
-app.use('/img', express.static(__dirname + '/public/upload'));
+app.use('/img', express.static(__dirname + '/public'));
+console.log(__dirname+ "/public");
 //connection to Mongoose and set connection variable
 mongoose.connect(dbUrl.url,{
    useNewUrlParser: true,
