@@ -13,7 +13,7 @@ let homeSchema = mongoose.Schema({
         required: true
     },
     postCode: {
-        type: Number,
+        type: String,
         required: true
     },
     country: {
