@@ -197,7 +197,11 @@ addImageOffice: (req, res)=>{
 },
 //add new image by house id 
 addImageHouse: (req, res)=>{
-    cloudinary.uploader.upload(req.file.path,{  width: 1000, height: 500 }, (result)=>{
+    cloudinary.uploader.upload(req.file.path,  { responsive_breakpoints: 
+        { create_derived: true, 
+          bytes_step: 20000, 
+          min_width: 200, 
+          max_width: 1000 }}, (result)=>{
         
         let img = new ImageModel();
             img.image = result.url;
