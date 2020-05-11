@@ -197,7 +197,7 @@ addImageOffice: (req, res)=>{
 },
 //add new image by house id 
 addImageHouse: (req, res)=>{
-    cloudinary.uploader.upload(req.file.path, (result)=>{
+    cloudinary.uploader.upload(req.file.path, {width: 1000, crop: "scale"}, (result)=>{
         let img = new ImageModel();
             img.image = result.url;
         img.save(img)
