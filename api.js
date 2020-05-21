@@ -25,10 +25,10 @@ const swagger = require('swagger-ui-express');
 //import open Api documentation
 const openApi = require('./openapi/openApi');
 //import Cors
-const corsMiddleware = require('./libs/Cors');
+const cors = require('cors');
 
 // use Cors
-app.use(corsMiddleware);
+app.use(cors());
 // configure bodyparser to handle post request
 app.use(bodyParser.urlencoded({
   extended: true
