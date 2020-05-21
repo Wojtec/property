@@ -24,11 +24,16 @@ const officeRoutes = require('./routing/office');
 const swagger = require('swagger-ui-express');
 //import open Api documentation
 const openApi = require('./openapi/openApi');
+//import Cors
+const corsMiddleware = require('./libs/Cors');
 
+// use Cors
+app.use(corsMiddleware);
 // configure bodyparser to handle post request
 app.use(bodyParser.urlencoded({
   extended: true
 }))
+// use bodyParser
 app.use(bodyParser.json());
 //make public uplad folder
 process.env.PWD = process.cwd();

@@ -8,6 +8,15 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs');
+
+cloudinary.config({ 
+    cloud_name: 'hbtc6lmer', 
+    api_key: '134144429453754', 
+    api_secret: 'bn0eInar9pPdn5kNPd7IN0YfFh8' 
+  });
+
+
+
 module.exports = {
 //Login user
 login: (req,res)=>{
@@ -197,7 +206,7 @@ addImageOffice: (req, res)=>{
 },
 //add new image by house id 
 addImageHouse: (req, res)=>{
-    cloudinary.uploader.upload(req.file.path, {width: 1000, crop: "scale"}, (result)=>{
+    cloudinary.uploader.upload(req.file.path, (result)=>{
         let img = new ImageModel();
             img.image = result.url;
         img.save(img)
