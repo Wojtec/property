@@ -4,21 +4,24 @@ const geocoder = require('../libs/geocoder');
 
 //setup home schema
 let homeSchema = mongoose.Schema({
-    street: {
-        type: String,
-        required: true
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    postCode: {
-        type: String,
-        required: true
-    },
-    country: {
-        type: String,
-        required: true
+    address: {
+        street: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        postCode: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        }
+
     },
     location:{
         type: {
@@ -32,12 +35,57 @@ let homeSchema = mongoose.Schema({
     },
     image: {
         type: Array,
-        contentType: String
     },
-    title: {
-        type: String,
-        required: true
-    },   
+    basicFeatures: {
+        m2: {
+            type: Number,
+            required: true
+        },   
+        type: {
+            type: String,
+            required: true
+        },    
+        bedrooms: {
+            type: Number,
+            required: true
+        },
+        bathrooms: {
+            type: Number,
+            required: true
+        },
+        equipment: {
+            type: String,
+            required: true
+        },
+        condition: {
+            type: String,
+            required: true
+        },
+        balcony: {
+            type: Boolean,
+            required: true
+        },
+        heating: {
+            type: String,
+            required: true
+        }
+        
+    },
+    building: {
+        floor: {
+            type: Number,
+            required: true
+        },
+        lift:{
+            type: Boolean,
+            required: true
+        },
+        guard:{
+            type: Boolean,
+            required: true
+        }
+
+    }, 
     price: {
         type: Number,
         required: true
@@ -45,44 +93,28 @@ let homeSchema = mongoose.Schema({
     description: {
         type: String,
         required: true
-    },    
-    type: {
-        type: String,
-        required: true
-    },    
-    bedrooms: {
-        type: Number,
-        required: true
-    },
-    bathrooms: {
-        type: Number,
-        required: true
-    },
-    equipment: {
-        type: String,
-        required: true
-    },
-    condition: {
-        type: String,
-        required: true
     },
     buyRent:{
         type: Boolean,
         required: true
-
     },
     date: {
         type: Date,
         default: Date.now
+    },
+    userId: {
+        type:[mongoose.Schema.Types.ObjectId],
+        ref: 'user'
+
     }
 });
 
 //geocoder create location
 homeSchema.pre('save', async function(next){
     let loc = await geocoder.geocode({
-        address: this.street,
-        country: this.country,
-        city: this.city
+        address: this.address.street,
+        country: this.address.country,
+        city: this.address.city
     });
     this.location = {
         type: 'Point',

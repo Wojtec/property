@@ -6,21 +6,24 @@ const geocoder = require('../libs/geocoder');
 
 //setup office model
 let officeSchema = mongoose.Schema({
-    street: {
-        type: String,
-        required: true
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    postCode: {
-        type: Number,
-        required: true
-    },
-    country: {
-        type: String,
-        required: true
+    address:{
+        street: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        postCode: {
+            type: Number,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        }
+
     },
     location:{
         type: {
@@ -32,14 +35,42 @@ let officeSchema = mongoose.Schema({
             index: '2dsphere'
         }
     },
-    building_use: {
-        type: String,
-        required: true
+    basicFeatuers:{
+        building_use: {
+            type: String,
+            required: true
+        },
+        m2: {
+            type: Number,
+            required: true
+        },
+        bathrooms: {
+            type: Number,
+            required: true
+        },
+        equipped: {
+            type: String,
+            required: true
+        },
+        energry: {
+            type: String,
+            required: true
+        }
     },
-    title: {
-        type: String,
-        required: true
-    },
+    building: {
+        floor:{
+            type: Number,
+            required: true
+        },
+        lift: {
+            type: Boolean,
+            required: true
+        },
+        guard: {
+            type: Boolean,
+            required: true
+        }
+    },   
     description: {
         type: String,
         required: true
@@ -49,8 +80,7 @@ let officeSchema = mongoose.Schema({
         required: true
     },
     image: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Image'
+        type: Array,
     },
     buyRent:{
         type: Boolean,
@@ -66,9 +96,9 @@ let officeSchema = mongoose.Schema({
 //geocoder create location
 officeSchema.pre('save', async function(next){
     let loc = await geocoder.geocode({
-        address: this.street,
-        country: this.country,
-        city: this.city
+        address: this.address.street,
+        country: this.address.country,
+        city: this.address.city
     });
     this.location = {
         type: 'Point',

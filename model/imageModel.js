@@ -5,7 +5,6 @@ let imageSchema = mongoose.Schema({
 
     image: {
         type: String,
-        contentType: String
     }
     
       

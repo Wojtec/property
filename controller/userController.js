@@ -18,6 +18,7 @@ cloudinary.config({
 
 
 module.exports = {
+
 //Login user
 login: (req,res)=>{
 UserModel.findOne({email: req.body.email},(err,user)=>{
@@ -43,38 +44,39 @@ UserModel.findOne({email: req.body.email},(err,user)=>{
     })
 })
 },
-//me test 
-meTest:(req,res, next)=>{
-let token =  req.headers['x-access-token'];
-if(!token){
-    return res.status(401).json({
-        auth: false,
-        message: 'No token provided.'
-    });
-}
-jwt.verify(token, config.secret, (err,decoded)=>{
-    if(err){
-        return res.status(500).json({
-            auth: false, 
-            message: 'Failed to authenticate token.'
-        })
-    }
-UserModel.findById(decoded.id,{password: 0},(err,user)=>{
-    if(err){
-        res.status(500).send("There was a problem finding the user.");
-    }
-    if(!user){
-        res.status(404).send("No user found.");
-    }
-    res.status(200).header("Access-Control-Allow-Origin", "*").json({
-        message: "User found",
-        data: user
-    });
- 
-})
-})
 
+//me test 
+meTest:(req,res)=>{
+let token =  req.headers['x-access-token'];
+    if(!token){
+        return res.status(401).json({
+            auth: false,
+            message: 'No token provided.'
+        });
+    }
+    jwt.verify(token, config.secret, (err,decoded)=>{
+        if(err){
+            return res.status(500).json({
+                auth: false, 
+                message: 'Failed to authenticate token.'
+            })
+        }
+
+    UserModel.findById(decoded.id,{password: 0},(err,user)=>{
+            if(err){
+                res.status(500).send("There was a problem finding the user.");
+            }
+            if(!user){
+                res.status(404).send("No user found.");
+            }
+            res.status(200).header("Access-Control-Allow-Origin", "*").json({
+                message: "User found",
+                data: user
+            });
+            })
+    })
 },
+
 //Register new users
 new:(req,res)=>{
 let hashPassword = bcrypt.hashSync(req.body.password);
@@ -82,6 +84,7 @@ let user = new UserModel();
 user.name = req.body.name,
 user.email = req.body.email,
 user.password = hashPassword
+
 //save new user
 user.save(user)
 
@@ -117,7 +120,7 @@ getUserList:(req,res)=>{
         });
     });
 },
-// get one user
+// get user by ID
 getOneUser: (req,res)=>{
     UserModel.findById(req.params.id,(err,user)=>{
         if(err){
@@ -129,35 +132,46 @@ getOneUser: (req,res)=>{
         })
     })
 },
+
 //HOUSE
 // add new house by user id
 userCollectionHouse:(req,res)=>{
     const house = new HomeModel();
-    house.title = req.body.title;
-    house.price = req.body.price;
+    house.building.floor = req.body.floor;
+    house.building.lift = req.body.lift;
+    house.building.guard = req.body.guard;
+    house.basicFeatures.m2 = req.body.title;
+    house.basicFeatures.type = req.body.type;
+    house.basicFeatures.bedrooms = req.body.bedrooms;
+    house.basicFeatures.bathrooms = req.body.bathrooms;
+    house.basicFeatures.equipment = req.body.equipment;
+    house.basicFeatures.condition = req.body.condition;
+    house.basicFeatures.balcony = req.body.balcony;
+    house.basicFeatures.heating = req.body.heating;
+    house.address.street = req.body.street;
+    house.address.city = req.body.city;
+    house.address.postCode = req.body.postCode;
+    house.address.country = req.body.country;
+    house.address.buyRent = req.body.buyRent;
     house.description = req.body.description;
-    house.type = req.body.type;
-    house.bedrooms = req.body.bedrooms;
-    house.bathrooms = req.body.bathrooms;
-    house.equipment = req.body.equipment;
-    house.condition = req.body.condition;
-    house.street = req.body.street;
-    house.city = req.body.city;
-    house.postCode = req.body.postCode;
-    house.country = req.body.country;
+    house.price = req.body.price;
     house.buyRent = req.body.buyRent;
 // save new house
 HomeModel.create(house)
 // update user home after save
 .then((dbHome)=>{
-       return UserModel.findByIdAndUpdate(
+        UserModel.findByIdAndUpdate(
         {_id: req.userId},
         {$push: {home: dbHome._id}},
         {new: true});
        
+        HomeModel.findByIdAndUpdate(
+            {_id: dbHome._id},
+            {$push: {userId: req.userId}},
+            {new: true});
+
 })
 .then((dbHome)=>{
-
     res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message: 'New house add. Success!',
         data: dbHome

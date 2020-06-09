@@ -7,16 +7,16 @@ let userSchema = mongoose.Schema({
     name: {
         type: String,
         unique: true,
-        require: true
+        required: true
     },
     email: {
         type: String,
         unique: true,
-        require: true
+        required: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     home:{
         type: [mongoose.Schema.Types.ObjectId],
@@ -25,6 +25,17 @@ let userSchema = mongoose.Schema({
     office:{
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Office'
+    },
+    avatar:{
+        type: String,
+    },
+    messages: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Message'
+    },
+    date: {
+        type: Date,
+        default: Date.now,
     }
 
 })
