@@ -8,6 +8,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs');
+const officeModel = require('../model/officeModel');
 
 cloudinary.config({ 
     cloud_name: 'hbtc6lmer', 
@@ -20,8 +21,8 @@ cloudinary.config({
 module.exports = {
 
 //Login user
-login: (req,res)=>{
-UserModel.findOne({email: req.body.email},(err,user)=>{
+login:  (req,res)=>{
+ UserModel.findOne({email: req.body.email},(err,user)=>{
     if(err){
         return res.status(500).send("Error on the server");
     }
@@ -78,7 +79,7 @@ let token =  req.headers['x-access-token'];
 },
 
 //Register new users
-new:(req,res)=>{
+new: (req,res)=>{
 let hashPassword = bcrypt.hashSync(req.body.password);
 let user = new UserModel();
 user.name = req.body.name,
@@ -100,20 +101,20 @@ user.save(user)
     });
 
 })
-.catch(function(err){
+.catch((err)=>{
     res.json(err);
 })
 
 
 },
 //get users list
-getUserList:(req,res)=>{
+getUserList: (req,res)=>{
     UserModel.get((err,user)=>{
         if(err){
             res.json(err);
         }
         
-        res.status(200).header("Access-Control-Allow-Origin", "*").json({
+       res.status(200).header("Access-Control-Allow-Origin", "*").json({
             status: 'Success',
             message: 'Users list',
             data: user
@@ -121,7 +122,7 @@ getUserList:(req,res)=>{
     });
 },
 // get user by ID
-getOneUser: (req,res)=>{
+getOneUser:  (req,res)=>{
     UserModel.findById(req.params.id,(err,user)=>{
         if(err){
             res.json(err);
@@ -163,7 +164,6 @@ await HomeModel.create(house)
      {_id: req.userId},
      {$push: {home: dbHome._id}},
      {new: true});
-       
    await HomeModel.findByIdAndUpdate(
      {_id: dbHome._id},
      {$push: {userId: req.userId}},
@@ -178,14 +178,13 @@ await HomeModel.create(house)
 })
 },
 // Delete house by id
-delete: async (req,res)=>{
+deleteHouse: async (req,res)=>{
     try{
         await HomeModel.deleteOne(
            {_id:req.params.home_id});
         await UserModel.findByIdAndUpdate(
            {_id: req.userId},
-           {$pull:{ home : req.params.home_id }},
-           {new: false});
+           {$pull:{ home : req.params.home_id }});
         await  res.status(200).header("Access-Control-Allow-Origin", "*").json({
             message: 'House delete. Success!',
            })
@@ -195,15 +194,15 @@ delete: async (req,res)=>{
  },
 //Image
 //add new image by house id 
-addImageHouse: (req, res)=>{
+addImageHouse:(req, res)=>{
     try {
         cloudinary.uploader.upload(req.file.path, async (result)=>{
-               await HomeModel.findByIdAndUpdate(
+                HomeModel.findByIdAndUpdate(
                     {_id: req.params.home_id},
                     {$push: {image: result.url}},
                     {new: true}
-                 ).then(async (homeModel)=>{
-                   await res.status(200).header("Access-Control-Allow-Origin", "*").json({
+                 ).then((homeModel)=>{
+                    res.status(200).header("Access-Control-Allow-Origin", "*").json({
                         message: 'Update image success',
                         data: homeModel
                     })
@@ -213,30 +212,65 @@ addImageHouse: (req, res)=>{
         res.status(500).send(error);
     }
 },
+
 //OFFICE
 //add new office by user id
-userCollectionOffice:(req,res)=>{
+userCollectionOffice: async (req,res)=>{
+    const office = new OfficeModel();
+    office.address.street = req.body.street;
+    office.address.city = req.body.city;
+    office.address.postCode = req.body.postCode;
+    office.address.country = req.body.country;
+    office.basicFeatures.building_use = req.body.building_use;
+    office.basicFeatures.m2 = req.body.m2;
+    office.basicFeatures.bathrooms = req.body.bathrooms;
+    office.basicFeatures.layout = req.body.layout;
+    office.basicFeatures.heating = req.body.heating;
+    office.building.floor = req.body.floor;
+    office.building.lift = req.body.lift;
+    office.building.guard = req.body.guard;
+    office.description = req.body.description;
+    office.price = req.body.price;
+    office.buyRent = req.body.buyRent;
+
 //save new office
-OfficeModel.create(req.body)
+await OfficeModel.create(office)
 // update new office in user
-.then((dbOffice)=>{
-    return UserModel.findByIdAndUpdate(
+.then(async (dbOffice)=>{
+    await UserModel.findByIdAndUpdate(
         {_id: req.userId},
         {$push: {office: dbOffice._id}},
-        {new: true}
-    );
-})
-//display user with id after update office
-.then((userModel)=>{
-    res.status(200).header("Access-Control-Allow-Origin", "*").json({
-        message: 'Update office success',
-        data: userModel
-    })
-})
-.catch((err)=>{
+        {new: true});
+    await OfficeModel.findByIdAndUpdate(
+        {_id: dbOffice._id},
+        {$push: {userId: req.userId}},
+        {new: true});
+    await  res.status(200).header("Access-Control-Allow-Origin", "*").json({
+        message: 'New house add. Success!',
+        data: dbOffice,
+        })
+}).catch((err)=>{
     res.json(err);
 })
 },
+
+// Delete office by id
+deleteOffice: async (req,res)=>{
+    try{
+        await officeModel.deleteOne(
+           {_id:req.params.office_id});
+        await UserModel.findByIdAndUpdate(
+           {_id: req.userId},
+           {$pull:{ office : req.params.office_id }});
+        await  res.status(200).header("Access-Control-Allow-Origin", "*").json({
+            message: 'Office delete. Success!',
+           })
+    }catch(error){
+        res.status(500).send(error);
+    }
+ },
+
+
 //add new image by office id 
 addImageOffice: (req, res)=>{
     let img = new ImageModel();

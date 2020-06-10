@@ -35,7 +35,7 @@ let officeSchema = mongoose.Schema({
             index: '2dsphere'
         }
     },
-    basicFeatuers:{
+    basicFeatures:{
         building_use: {
             type: String,
             required: true
@@ -48,12 +48,12 @@ let officeSchema = mongoose.Schema({
             type: Number,
             required: true
         },
-        equipped: {
+        layout: {
             type: String,
             required: true
         },
-        energry: {
-            type: String,
+        heating: {
+            type: Boolean,
             required: true
         }
     },
@@ -85,6 +85,11 @@ let officeSchema = mongoose.Schema({
     buyRent:{
         type: Boolean,
         required: true
+    },
+    userId: {
+        type:[mongoose.Schema.Types.ObjectId],
+        ref: 'user'
+
     },
     date: {
         type: Date,
