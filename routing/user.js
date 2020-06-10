@@ -35,7 +35,7 @@ router.route('/home/:home_id')
 
 //post image to home by id
 router.route('/home/:home_id/image')
-.post(upload.single('image'), userController.addImageHouse)
+.post(verifyToken,upload.single('image'), userController.addImageHouse)
 .get(userController.getImage);
 
 //post office to user by id

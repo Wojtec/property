@@ -73,7 +73,7 @@ let token =  req.headers['x-access-token'];
                 message: "User found",
                 data: user
             });
-            })
+         })
     })
 },
 
@@ -127,7 +127,7 @@ getOneUser: (req,res)=>{
             res.json(err);
         }
         res.status(200).header("Access-Control-Allow-Origin", "*").json({
-            message: 'User lading',
+            message: 'User loading',
             data: user
         })
     })
@@ -135,12 +135,12 @@ getOneUser: (req,res)=>{
 
 //HOUSE
 // add new house by user id
-userCollectionHouse:(req,res)=>{
+userCollectionHouse:async (req,res)=>{
     const house = new HomeModel();
     house.building.floor = req.body.floor;
     house.building.lift = req.body.lift;
     house.building.guard = req.body.guard;
-    house.basicFeatures.m2 = req.body.title;
+    house.basicFeatures.m2 = req.body.m2;
     house.basicFeatures.type = req.body.type;
     house.basicFeatures.bedrooms = req.body.bedrooms;
     house.basicFeatures.bathrooms = req.body.bathrooms;
@@ -152,110 +152,66 @@ userCollectionHouse:(req,res)=>{
     house.address.city = req.body.city;
     house.address.postCode = req.body.postCode;
     house.address.country = req.body.country;
-    house.address.buyRent = req.body.buyRent;
     house.description = req.body.description;
     house.price = req.body.price;
     house.buyRent = req.body.buyRent;
 // save new house
-HomeModel.create(house)
+await HomeModel.create(house)
 // update user home after save
-.then((dbHome)=>{
-        UserModel.findByIdAndUpdate(
-        {_id: req.userId},
-        {$push: {home: dbHome._id}},
-        {new: true});
+.then(async (dbHome)=>{
+  await  UserModel.findByIdAndUpdate(
+     {_id: req.userId},
+     {$push: {home: dbHome._id}},
+     {new: true});
        
-        HomeModel.findByIdAndUpdate(
-            {_id: dbHome._id},
-            {$push: {userId: req.userId}},
-            {new: true});
-
-})
-.then((dbHome)=>{
-    res.status(200).header("Access-Control-Allow-Origin", "*").json({
-        message: 'New house add. Success!',
-        data: dbHome
+   await HomeModel.findByIdAndUpdate(
+     {_id: dbHome._id},
+     {$push: {userId: req.userId}},
+     {new: true});
+   await  res.status(200).header("Access-Control-Allow-Origin", "*").json({
+     message: 'New house add. Success!',
+     data: dbHome,
     })
 })
-.catch(function(err){
+.catch((err)=>{
     res.json(err);
 })
 },
 // Delete house by id
-delete: (req,res)=>{
-    HomeModel.deleteOne({
-        _id:req.params.home_id
-    },(err)=>{
-        if(err)
-            res.send(err);
-        res.status(200).header("Access-Control-Allow-Origin", "*").json({
-            status:'Success',
-            message: 'Home deleted'
-        })
-    })
+delete: async (req,res)=>{
+    try{
+        await HomeModel.deleteOne(
+           {_id:req.params.home_id});
+        await UserModel.findByIdAndUpdate(
+           {_id: req.userId},
+           {$pull:{ home : req.params.home_id }},
+           {new: false});
+        await  res.status(200).header("Access-Control-Allow-Origin", "*").json({
+            message: 'House delete. Success!',
+           })
+    }catch(error){
+        res.status(500).send(error);
+    }
  },
 //Image
-//add new image by office id 
-addImageOffice: (req, res)=>{
-    let img = new ImageModel();
-    img.image.data = fs.readFileSync(req.file.path);
-    img.image.contentType = req.file.mimetype;
-    ImageModel.create(img)
-    .then((dbImage)=>{
-        return OfficeModel.findByIdAndUpdate(
-            {_id: req.params.office_id},
-            {$push: {image: dbImage._id}},
-            {new: true}
-        );
-    })
-    .then((officeModel)=>{
-        res.status(200).header("Access-Control-Allow-Origin", "*").json({
-            message: 'Update image success',
-            data: officeModel
-        })
-    })
-    .catch((err)=>{
-        res.json(err);
-    })
-},
 //add new image by house id 
 addImageHouse: (req, res)=>{
-    cloudinary.uploader.upload(req.file.path, (result)=>{
-        let img = new ImageModel();
-            img.image = result.url;
-        img.save(img)
-        .then((image)=>{
-            console.log(image);
-                return HomeModel.findByIdAndUpdate(
-                {_id: req.params.home_id},
-                {$push: {image: image}},
-                {new: true}
-             );
-        })
-         .then((homeModel)=>{
-             res.status(200).header("Access-Control-Allow-Origin", "*").json({
-                 message: 'Update image success',
-                 data: homeModel
+    try {
+        cloudinary.uploader.upload(req.file.path, async (result)=>{
+               await HomeModel.findByIdAndUpdate(
+                    {_id: req.params.home_id},
+                    {$push: {image: result.url}},
+                    {new: true}
+                 ).then(async (homeModel)=>{
+                   await res.status(200).header("Access-Control-Allow-Origin", "*").json({
+                        message: 'Update image success',
+                        data: homeModel
+                    })
+                })
              })
-         })
-        .catch((err)=>{
-            res.json(err);
-        })
-    })
-   
-},
-// get image 
-getImage:(req,res)=>{
-    ImageModel.findOne({},(err,image)=>{
-        if(err){
-            res.json(err);
-        }
-        console.log(image);
-        res.status(200).header("Access-Control-Allow-Origin", "*").json({
-             message: 'image loaded',
-             data: image
-        })
-    })
+    }catch(error){
+        res.status(500).send(error);
+    }
 },
 //OFFICE
 //add new office by user id
@@ -280,5 +236,28 @@ OfficeModel.create(req.body)
 .catch((err)=>{
     res.json(err);
 })
-}
+},
+//add new image by office id 
+addImageOffice: (req, res)=>{
+    let img = new ImageModel();
+    img.image.data = fs.readFileSync(req.file.path);
+    img.image.contentType = req.file.mimetype;
+    ImageModel.create(img)
+    .then((dbImage)=>{
+        return OfficeModel.findByIdAndUpdate(
+            {_id: req.params.office_id},
+            {$push: {image: dbImage._id}},
+            {new: true}
+        );
+    })
+    .then((officeModel)=>{
+        res.status(200).header("Access-Control-Allow-Origin", "*").json({
+            message: 'Update image success',
+            data: officeModel
+        })
+    })
+    .catch((err)=>{
+        res.json(err);
+    })
+},
 }

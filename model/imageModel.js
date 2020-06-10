@@ -7,8 +7,6 @@ let imageSchema = mongoose.Schema({
         type: String,
     }
     
-      
-    
 },{timestamps: true})
 //Export image model
 let Image = module.exports = mongoose.model('image', imageSchema);

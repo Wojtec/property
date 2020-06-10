@@ -66,7 +66,7 @@ let homeSchema = mongoose.Schema({
             required: true
         },
         heating: {
-            type: String,
+            type: Boolean,
             required: true
         }
         
