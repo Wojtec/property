@@ -46,7 +46,7 @@ module.exports = {
        });
    })
 },
-// select one house
+// select house by id
    one: (req,res)=>{
    HomeModel.findById(req.params.home_id, (err,home)=>{
        if(err){

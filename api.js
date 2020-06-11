@@ -20,6 +20,8 @@ const userRoutes = require('./routing/user');
 const homeRoutes = require('./routing/home');
 //import office routes
 const officeRoutes = require('./routing/office');
+//import message routes
+const messageRoutes = require('./routing/message');
 //import swagger ui
 const swagger = require('swagger-ui-express');
 //import open Api documentation
@@ -64,7 +66,8 @@ app.use('/home',homeRoutes);
 app.use('/office',officeRoutes);
 //route for home table
 app.use('/',homeRoutes);
-
+//route for message table
+app.use('/message',messageRoutes);
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));
 

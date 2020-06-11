@@ -1,19 +1,17 @@
 const UserModel = require('../model/userModel');
 const HomeModel = require('../model/homeModel');
 const OfficeModel = require('../model/officeModel');
-const ImageModel = require('../model/imageModel');
 
 const cloudinary = require('cloudinary');
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs');
 const officeModel = require('../model/officeModel');
 
 cloudinary.config({ 
-    cloud_name: 'hbtc6lmer', 
-    api_key: '134144429453754', 
-    api_secret: 'bn0eInar9pPdn5kNPd7IN0YfFh8' 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.API_KEY, 
+    api_secret: process.env.API_SECRET
   });
 
 
@@ -273,25 +271,22 @@ deleteOffice: async (req,res)=>{
 
 //add new image by office id 
 addImageOffice: (req, res)=>{
-    let img = new ImageModel();
-    img.image.data = fs.readFileSync(req.file.path);
-    img.image.contentType = req.file.mimetype;
-    ImageModel.create(img)
-    .then((dbImage)=>{
-        return OfficeModel.findByIdAndUpdate(
-            {_id: req.params.office_id},
-            {$push: {image: dbImage._id}},
-            {new: true}
-        );
-    })
-    .then((officeModel)=>{
-        res.status(200).header("Access-Control-Allow-Origin", "*").json({
-            message: 'Update image success',
-            data: officeModel
-        })
-    })
-    .catch((err)=>{
-        res.json(err);
-    })
+    try {
+        cloudinary.uploader.upload(req.file.path, async (result)=>{
+                officeModel.findByIdAndUpdate(
+                    {_id: req.params.office_id},
+                    {$push: {image: result.url}},
+                    {new: true}
+                 ).then((officeModel)=>{
+                    res.status(200).header("Access-Control-Allow-Origin", "*").json({
+                        message: 'Update image success',
+                        data: officeModel
+                    })
+                })
+             })
+    }catch(error){
+        res.status(500).send(error);
+    }
+ 
 },
 }

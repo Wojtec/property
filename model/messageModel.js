@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 // setup message model
 const messageSchema = mongoose.Schema({
 
-    userName: {
+    name: {
         type: String,
         required: true
     },
@@ -12,7 +12,7 @@ const messageSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    message:{
+    text:{
         type: String,
         required: true
     },

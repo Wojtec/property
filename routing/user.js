@@ -49,7 +49,7 @@ router.route('/office/:office_id')
 
 //post image to office by id
 router.route('/office/:office_id/image')
-.post(upload.single('image'), userController.addImageOffice)
+.post(verifyToken,upload.single('image'), userController.addImageOffice)
 
 // export api routes
 module.exports = router;
