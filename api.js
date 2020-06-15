@@ -31,15 +31,19 @@ const cors = require('cors');
 
 // use Cors
 app.use(cors());
+
 // configure bodyparser to handle post request
 app.use(bodyParser.urlencoded({
   extended: true
-}))
+}));
+
 // use bodyParser
 app.use(bodyParser.json());
+
 //make public uplad folder
 process.env.PWD = process.cwd();
 app.use('/proxy',express.static(path.join(process.env.PWD, 'public')));
+
 //connection to Mongoose and set connection variable
 mongoose.connect(dbUrl.url,{
    useNewUrlParser: true,
@@ -58,81 +62,22 @@ if(!db){
 
 //swagger route
 app.use('/open',swagger.serve, swagger.setup(openApi));
+
 //route for user
 app.use('/user',userRoutes);
+
 //route for home table
 app.use('/home',homeRoutes);
+
 //route for office table
 app.use('/office',officeRoutes);
+
 //route for home table
 app.use('/',homeRoutes);
+
 //route for message table
 app.use('/message',messageRoutes);
+
 // run app to listen to specified port
 app.listen(port,()=> console.log(`Server running on port:${port}`));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const MongoClient = require('mongodb').MongoClient;
-// const assert = require('assert');
-
-// // Connection URL
-// const url = 'mongodb://localhost:27017';
-
-// // Database Name
-// const dbName = 'myproject';
-
-// // Create a new MongoClient
-// const client = new MongoClient(url, { useNewUrlParser:  true, useUnifiedTopology: true });
-
-// // Use connect method to connect to the Server
-// client.connect(function(err) {
-//   assert.equal(null, err);
-//   console.log("Connected successfully to server");
-
-//   const db = client.db(dbName);
-
-//   insertDocuments(db, function() {
-//     client.close();
-//   });
-// });
-
-// const insertDocuments = function(db, callback) {
-//     // Get the documents collection
-//     const collection = db.collection('documents');
-//     // Insert some documents
-//     collection.insertMany([
-//       {a : 1}, {a : 2}, {a : 3}
-//     ], function(err, result) {
-//       assert.equal(err, null);
-//       assert.equal(3, result.result.n);
-//       assert.equal(3, result.ops.length);
-//       console.log("Inserted 3 documents into the collection");
-//       test(collection);
-//     });
-//   }
-  
-// function test(result){
-// }

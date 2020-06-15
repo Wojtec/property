@@ -86,7 +86,7 @@ let officeSchema = mongoose.Schema({
         type: Boolean,
         required: true
     },
-    userId: {
+    user_id: {
         type:[mongoose.Schema.Types.ObjectId],
         ref: 'user'
 

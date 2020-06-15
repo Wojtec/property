@@ -19,8 +19,8 @@ cloudinary.config({
 module.exports = {
 
 //Login user
-login:  (req,res)=>{
- UserModel.findOne({email: req.body.email},(err,user)=>{
+login: async (req,res)=>{
+ await UserModel.findOne({email: req.body.email},(err,user)=>{
     if(err){
         return res.status(500).send("Error on the server");
     }
@@ -45,7 +45,7 @@ login:  (req,res)=>{
 },
 
 //me test 
-meTest:(req,res)=>{
+meTest:async (req,res)=>{
 let token =  req.headers['x-access-token'];
     if(!token){
         return res.status(401).json({
@@ -77,7 +77,7 @@ let token =  req.headers['x-access-token'];
 },
 
 //Register new users
-new: (req,res)=>{
+new: async (req,res)=>{
 let hashPassword = bcrypt.hashSync(req.body.password);
 let user = new UserModel();
 user.name = req.body.name,
@@ -85,10 +85,10 @@ user.email = req.body.email,
 user.password = hashPassword
 
 //save new user
-user.save(user)
+await user.save(user)
 
 //create token
-.then((user)=>{
+.then(async(user)=>{
     let token = jwt.sign({id: user._id}, config.secret,{
         expiresIn:86400 // expires in 24 hours
     });
@@ -98,15 +98,13 @@ user.save(user)
         message: 'New user created'
     });
 
-})
-.catch((err)=>{
-    res.json(err);
-})
-
-
+}).catch((err)=>{
+        res.json(err);
+    })
 },
+
 //get users list
-getUserList: (req,res)=>{
+getUserList: async (req,res)=>{
     UserModel.get((err,user)=>{
         if(err){
             res.json(err);
@@ -120,7 +118,7 @@ getUserList: (req,res)=>{
     });
 },
 // get user by ID
-getOneUser:  (req,res)=>{
+getOneUser: async (req,res)=>{
     UserModel.findById(req.params.id,(err,user)=>{
         if(err){
             res.json(err);
@@ -183,7 +181,7 @@ deleteHouse: async (req,res)=>{
         await UserModel.findByIdAndUpdate(
            {_id: req.userId},
            {$pull:{ home : req.params.home_id }});
-        await  res.status(200).header("Access-Control-Allow-Origin", "*").json({
+           res.status(200).header("Access-Control-Allow-Origin", "*").json({
             message: 'House delete. Success!',
            })
     }catch(error){
@@ -192,19 +190,22 @@ deleteHouse: async (req,res)=>{
  },
 //Image
 //add new image by house id 
-addImageHouse:(req, res)=>{
+addImageHouse:async (req, res)=>{
     try {
-        cloudinary.uploader.upload(req.file.path, async (result)=>{
-                HomeModel.findByIdAndUpdate(
+        await cloudinary.uploader.upload(req.file.path, async (result)=>{
+                await HomeModel.findByIdAndUpdate(
                     {_id: req.params.home_id},
                     {$push: {image: result.url}},
                     {new: true}
-                 ).then((homeModel)=>{
+                 ).then(async (homeModel)=>{
                     res.status(200).header("Access-Control-Allow-Origin", "*").json({
                         message: 'Update image success',
                         data: homeModel
                     })
-                })
+                }).catch((err) =>{
+                    res.status(500).send(err);
+
+                });
              })
     }catch(error){
         res.status(500).send(error);
@@ -236,12 +237,12 @@ await OfficeModel.create(office)
 // update new office in user
 .then(async (dbOffice)=>{
     await UserModel.findByIdAndUpdate(
-        {_id: req.userId},
+        {_id: req.user_id},
         {$push: {office: dbOffice._id}},
         {new: true});
     await OfficeModel.findByIdAndUpdate(
         {_id: dbOffice._id},
-        {$push: {userId: req.userId}},
+        {$push: {userId: req.user_id}},
         {new: true});
     await  res.status(200).header("Access-Control-Allow-Origin", "*").json({
         message: 'New house add. Success!',
@@ -270,14 +271,14 @@ deleteOffice: async (req,res)=>{
 
 
 //add new image by office id 
-addImageOffice: (req, res)=>{
+addImageOffice:async (req, res)=>{
     try {
-        cloudinary.uploader.upload(req.file.path, async (result)=>{
-                officeModel.findByIdAndUpdate(
+       await cloudinary.uploader.upload(req.file.path, async (result)=>{
+               await officeModel.findByIdAndUpdate(
                     {_id: req.params.office_id},
                     {$push: {image: result.url}},
                     {new: true}
-                 ).then((officeModel)=>{
+                 ).then(async(officeModel)=>{
                     res.status(200).header("Access-Control-Allow-Origin", "*").json({
                         message: 'Update image success',
                         data: officeModel

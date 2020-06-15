@@ -1,7 +1,7 @@
 const OfficeModel = require('../model/officeModel');
 module.exports = {
 //handle index actions
-    index: (req,res)=>{
+    index: async (req,res)=>{
     OfficeModel.get((err,office)=>{
        if(err){
            res.status(500).json({
@@ -16,35 +16,9 @@ module.exports = {
        });
    });
 },
-//handle new office 
-   newOffice: (req,res) =>{
-   let local =  new OfficeModel();
-   local.street = req.body.street,
-   local.city = req.body.city,
-   local.postCode = req.body.postCode,
-   local.country = req.body.country,
-   local.building_use =  req.body.building_use,
-   local.title = req.body.title,
-   local.description = req.body.description,
-   local.price = req.body.price,
-   local.image = req.body.image,
-   local.buyRent = req.body.buyRent,
-   local.date = req.body.date
-   console.log(local);
-//save office in db
-    local.save((err)=>{
-        if(err){
-            res.status(500).json(err);
-        }
-    res.status(200).header("Access-Control-Allow-Origin", "*").json({
-        message: 'New Office add ++',
-        data: local
-         });
-       })
-    },
 //get office by id
-    oneOffice: (req,res)=>{
-        OfficeModel.findById(req.params.office_id,(err,office)=>{
+    oneOffice: async(req,res)=>{
+       await OfficeModel.findById(req.params.office_id,(err,office)=>{
             if(err){
                 res.status(500).json(err);
             }
@@ -55,43 +29,12 @@ module.exports = {
 
         })
     },
-//delete office by id 
-    deleteOffice: (req,res)=>{
-        OfficeModel.deleteOne({_id:req.params.office_id},(err)=>{
-            if(err)
-                res.status(500).send(err);
-            
-            res.status(200).header("Access-Control-Allow-Origin", "*").json({
-                status:'Success',
-                message: 'Office delete'
-            })
-        })
-    },
-//Filter by all parameters
-    findByPrice: (req,res)=>{
-        console.log(req);
-        OfficeModel.find({$and: [{
-            buyRent: req.params.buyRent,
-            city: req.params.city,
-            price: req.params.price
-        }]}, (err,office)=>{
-            if(err){
-                res.status(500).json(err);
-            }
-            res.status(200).header("Access-Control-Allow-Origin", "*").json({
-                message: "Offices by price loading",
-                data: office
-            })
-        })
-    },
+
 //Filter price office From To
     priceFilterOffice: (req,res)=>{
-        OfficeModel.find({$and: [{
-            buyRent: req.params.buyRent,
-            city: req.params.city,
-            price: {$gte: req.params.from , $lte: req.params.to},
-            price: {$lte: req.params.to, $gte: req.params.from }
-        }]},(err,office)=>{
+        OfficeModel.find(
+            {price: {$gte: req.params.from , $lte: req.params.to}
+        },(err,office)=>{
     if(err){
         res.status(500).json(err);
     }
@@ -104,10 +47,10 @@ module.exports = {
 
     },
 //Filter office by buyRent and city
-    filterBuyRentCity: (req,res)=>{
-        OfficeModel.find({ $and: [{
+    filterBuyRentCity:async (req,res)=>{
+       await OfficeModel.find({ $and: [{
             buyRent: req.params.buyRent,
-            city: req.params.city
+            "address.city": req.params.city
         }]},(err,office)=>{
             if(err){
                 res.status(500).json(err)
@@ -162,7 +105,7 @@ module.exports = {
             configDate.setMonth(configDate.getMonth() - 1);
         }
             OfficeModel.find({ 
-                date: { $lte: new Date(today), $gte: new Date(configDate)}
+                date: { $gte: new Date(configDate)}
 
             },(err,office)=>{
             if(err){

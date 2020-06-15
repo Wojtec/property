@@ -9,10 +9,8 @@ module.exports ={
         message.name  = req.body.name;
         message.email = req.body.email;
         message.text = req.body.text;
-        MessageModel.create(message)
+       await MessageModel.create(message)
        .then(async (dbmessage)=>{
-           console.log(req.params.user_id);
-           console.log(message);
           await UserModel.findByIdAndUpdate(
                {_id: req.params.user_id},
                {$push: {messages: dbmessage._id}},
@@ -26,7 +24,22 @@ module.exports ={
        }).catch((err)=>{
         res.json(err);
     })
+    },
+
+    deleteMessage: async (req,res) => {
+        try{
+            console.log(req);
+            await MessageModel.deleteOne(
+                {_id: req.params.message_id});
+            await UserModel.findByIdAndUpdate(
+                {_id: req.params.user_id},
+                {$pull: {messages: req.params.message_id}});
+                res.status(200).header("Access-Control-Allow-Origin", "*").json({
+                    message: 'Message delete. Success!',
+                   })
+        }catch(error){
+            res.status(500).send(error);
+        }
     }
-    
 
 }
